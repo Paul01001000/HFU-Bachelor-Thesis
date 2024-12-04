@@ -20,14 +20,6 @@ According to Gartner \cite{gartner2023magicquadrant} UiPath is one of the leadin
 
 \end{itemize}
 \subsection{Data Extraction Workflow}
-Using the just described UiPath products a simple workflow has been developed to automatically process the given invoices.
-Before the workflow execution, all documents are uploaded into a cloud storage bucket in the orchestrator. \Cref{pic:UiPath_1} outlines the data extraction process workflow that is used to produce the results for this research. 
-\begin{enumerate}
-    \item The process starts by retrieving a list of all files stored in the connected cloud storage bucket. 
-    \item The \textit{for-loop} iterates over all files and processes them in its inner process workflow. For each file the file name is stored in a local variable and is printed as a log message. 
-    \item The content of the current file is locally downloaded and forwarded to the \textit{Extract Document Data} component. The results are saved into a text file and uploaded to the results folder of the storage bucket in the orchestrator. The results are also printed as a log message. These to process steps are unfolded in \cref{pic:UiPath_2}.
-    \item Finally, the current file is uploaded to the processed folder and deleted from the input folder.
-\end{enumerate}
 \begin{figure}[ht]
     \centering 
     \includegraphics[width=0.7\textwidth]{pictures/Workflow.png}
@@ -40,14 +32,23 @@ Before the workflow execution, all documents are uploaded into a cloud storage b
     \caption{UiPath Download Storage File \& Extract Document Data}
     \label{pic:UiPath_2}    % label the image for internal referencing
 \end{figure}
+
+Using the just described UiPath products a simple workflow has been developed to automatically process the given invoices.
+Before the workflow execution, all documents are uploaded into a cloud storage bucket in the orchestrator. \Cref{pic:UiPath_1} outlines the data extraction process workflow that is used to produce the results for this research. 
+\begin{enumerate}
+    \item The process starts by retrieving a list of all files stored in the connected cloud storage bucket. 
+    \item The \textit{for-loop} iterates over all files and processes them in its inner process workflow. For each file the file name is stored in a local variable and is printed as a log message. 
+    \item The current file is locally downloaded and forwarded to the \textit{Extract Document Data} component, where the information is automatically extracted. Inside the \textit{Extract Document Data} component either a predefined of a custom Document Understanding Project and the corresponding extractor model can be selected. This process step is unfolded in \cref{pic:UiPath_2}.
+    \item The results are saved into a text file and uploaded to the results folder of the storage bucket in the orchestrator. The results are also printed as a log message. 
+    \item Finally, the current file is uploaded to the processed folder and deleted from the input folder.
+\end{enumerate}
+
 \subsection{Analyzing the results}
-To analyze the results Python and the Pandas framework are used. The results text files are loaded into a Pandas data table together with the database
-containing the actual values. When all the data is successfully imported, minor pre-processing activities like datatype conversions, stripping of leading spaces
-and unification of the the date format are performed.
+To analyze the results Python together with the Pandas framework are used. The results text files are loaded into a Pandas data table together with the database file
+containing the true values of all invoices. When all the data is successfully imported, minor pre-processing activities like datatype conversions, stripping of leading spaces and unification of the the date format are performed.
 Using the the file name as unique identifier the extracted results are compared with the actual values. For \textit{Invoice Date, Invoice Number}
 and \textit{Amount} the exact match is required for the filed to be marked as correctly identified. 
-The \textit{Vendor} counts as correctly identified if the extracted string contains the actual vendor name as a substring. This additional 
-tolerance is needed to prevent that minor inaccuracies of the data in the database lead to correctly identified values to be marked as incorrect.
+The \textit{Vendor} counts as correctly identified if the extracted string contains the actual vendor name as a substring. This additional tolerance is needed to prevent that minor inaccuracies of the data in the database lead to correctly identified values to be marked as incorrect.
 Like this the results are made quantifiable and further statistical metrics can be calculated.
 \section{Model Selection and Architecture}
 %Justify the choice of generative AI model (e.g., GAN, VAE) based on the specific requirements of the task.
@@ -55,14 +56,27 @@ Like this the results are made quantifiable and further statistical metrics can 
 \section{Data Collection and Pre-processing}
 %Describe the process of gathering a diverse dataset of financial documents (e.g., invoices, receipts, contracts).
 % Explain the steps involved in data cleaning, normalization, and formatting for model training.
+For this project, a total of 322 invoice documents have been provided by the company \textit{Wegbereiter Engineering Consulting} located in Furtwangen, Germany. The data includes for instance invoices for office supplies and receipts from business trips. After screening all initial invoices 160 documents have been selected to the basis for the results. Repetitive invoices like the monthly invoices of internet service providers and gas station receipts have been excluded and limited to at most 6 of a kind to avoid the results having a one-sided bias if a single document type makes up a too big amount of the data
+The selected invoices are dated between 2019 and 2024 and consist of 80 digitally created documents as well as 80 scans of printed documents. 
+Some samples of the invoices can be found in the appendix \cref{apprendix}.
 \section{Training Process}
 %Explain the training process
 %Describe the evaluation metrics used to assess the model's performance 
 %Discuss the experimental setup and cross-validation techniques employed.
 \section{Evaluation Metrics}
 \subsection{Accuracy}
-\subsection{No result rate}
-\subsection{Accuracy excluding no results}
+The accuracy indicates the percentage of cases where the extracted value is correctly identified. \textit{Correct Results} is the count of the correct results and \textit{All results} is the total number of results.
+\[ Accuracy = \frac{Correct \ Results}{All \ Results}\]
+When comparing different models or target variable the accuracy can be used as an indicator for the performance of the model.
+\subsection{Null rate}
+The \textit{Null rate} is the percentage of cases where the extractor has not returned a value at all. \textit{Null Results} is the number of Null values.
+\[ Null \ Rate = \frac{Null \ Results}{All \ Results}\]
+The Null rate is of interest when determining the model performance on different target variables.
+\subsection{Cleaned Accuracy}
+The \textit{cleaned accuracy} is the accuracy when excluding all null values beforehand. In other words, it indicates the percentage of cases where the correct value is returned given a value is returned.
+\[ Cleaned \ Accuracy = \frac{Correct \ Results}{All \ Results - Null \ Results}\]
+\[Cleaned \ Accuracy \geq Accuracy\]
+The cleaned accuracy is important, because null results can be easily identified and manually reworked, while actual incorrect results are more complicated to identify.
 \subsection{Document Score}
 The \textit{Document Score} indicates how many of the four target variable are correctly identified for a specific input document.
 The maximum score is 4 meaning that all four fields have been correctly identified. On the other hand, when no correct value has been identified
