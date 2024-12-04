@@ -4,6 +4,75 @@
 %Present the quantitative results of the model evaluation, including accuracy
 %Analyze the model's strengths and weaknesses in handling different types of financial documents.
 %Compare the performance of the generative AI model to existing methods.
+
+\begin{table}[ht]   % table position
+    \centering
+    \footnotesize
+    \begin{tabular}{c|rrr} % columns and their alignment
+        \toprule    % separator line
+        Field  & Accuracy  & Null Percentage & Accuracy excluding Null \\
+        \midrule    % separator line
+        Vendor           & 81.875 \%   &  6.25 \%   & 87.33 \% \\
+        Invoice Number   & 70.625 \%   & 26.25 \%  & 95.76 \%\\
+        Amount           & 86.250 \%   & 11.25 \%  & 97.18 \% \\
+        Invoice Date     & 86.875 \%   & 10.6  \%  & 97.20 \% \\
+        \bottomrule % separator line
+    \end{tabular}
+    \caption{Comparison of Extracted Field}
+    \label{table:Field_Com}
+\end{table}
+
+
+\begin{table}[ht]   % table position
+    \centering
+    \footnotesize
+    \begin{tabular}{c|rrr} % columns and their alignment
+        \toprule    % separator line
+        Field  & Accuracy  & Null Percentage & Accuracy excluding Null \\
+        \midrule    % separator line
+        Vendor on PDF    & 92.50 \%   &  5.00 \%   & 97.37 \% \\
+        Vendor on Scan   & 71.25 \%   &  7.50 \%   & 77.03 \% \\
+        \midrule    % separator line
+        Invoice Number on PDF & 86.25 \%   & 10.0 \%  & 95.83 \%\\
+        Invoice Number on Scan & 55.00 \%  & 42.50 \%  & 95.65 \%\\
+        \midrule    % separator line
+        Amount on PDF      & 83.75 \%   & 13.75 \%  & 97.10 \% \\
+        Amount on Scan     & 88.75 \%   & 8.75 \%  & 97.26 \% \\
+        \midrule    % separator line
+        Invoice Date on PDF  & 85.00 \%   & 11.25  \%  & 95.77 \% \\
+        Invoice Date on Scan & 88.75 \%   & 10.00  \%  & 98.61 \% \\
+        
+        \bottomrule % separator line
+    \end{tabular}
+    \caption{Accuracy of PDF and Scan}
+    \label{table:Field_Com_Scan_PDF}
+\end{table}
+
+
+\begin{table}[ht]   % table position
+    \centering
+    \footnotesize
+    \begin{tabular}{c|rrr} % columns and their alignment
+        \toprule    % separator line
+        Vendor  & Accuracy  & Null Percentage & Accuracy excluding Null \\
+        \midrule    % separator line
+        Model               & 74.00 \%   & 8.00 \%   & 80.43 \% \\
+        Benchmark           & 76.00 \%   & 12.00 \%  & 86.36 \%\\
+        \midrule    % separator line
+        Model on PDF        & 75.00 \%   & 12.50 \%  & 85.71 \% \\
+        Benchmark on PDF    & 87.50 \%   & 12.50 \%  & 100.00 \% \\
+        \midrule    % separator line
+        Model on Scan       & 73.08 \%  & 3.85 \%   & 76.00 \% \\
+        Benchmark on Scan   & 65.38 \%  & 11.54 \%  & 73.91 \% \\
+
+        \bottomrule % separator line
+    \end{tabular}
+    \caption{Results on Vendor Field}
+    \label{table:Model_Bench_Vendor}
+\end{table}
+
+
+
 \begin{figure}[ht]
     \centering 
     \includegraphics[width=0.7\textwidth]{pictures/results.png}

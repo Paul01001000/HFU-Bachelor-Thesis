@@ -1,14 +1,54 @@
-\chapter{Methodology}
+\chapter{Experimental Methodology}
 
 \section{Experimental Setup}
 \subsection{Goal and Overview}
+The aim of this research is to investigate the capabilities of a state-of-the-art \acl{ML} Document Understanding system for automated invoice processing. For this purpose \textit{UiPath Document Understanding} is selected as subject of investigation. As target variables vendor, invoice number, payment amount and invoice date are selected. These targets are selected for two main reasons. On the one hand, all four variables are relevant for the creation of an invoice booking in an ERP system. On the other hand, the correct extraction of the different variables requires different degrees of document understanding capabilities. As test data 160 real invoice and receipt documents used.
+
+The experiment consist of two stages. In the first stage, the default pre-trained model for invoice understanding by UiPath is used. All 160 documents are presented as input and the results on the different target variables are compared. 
+
+For the second stage, a new custom model based on the default pre-trained model is instantiated and trained with additional examples. For this the invoice documents are randomly separated into one subset for training and one for testing. To evaluate the performance of the custom model, the results from the first stage on the test set are used as benchmark. 
+
+All UiPath workflow files that have been used for this research as well as the python script for analyzing the results and the raw data can be accessed on GitHub \url{https://github.com/Paul01001000/HFU-Bachelor-Thesis}.
+
 \subsection{UiPath Document Understanding}
+According to Gartner \cite{gartner2023magicquadrant} UiPath is one of the leading vendors of \acl{RPA} software. For this research the UiPath products \textit{Studio, Orchestrator, Document Understanding} and \textit{AI center} are used. 
+\begin{itemize}
+    \item \textit{Studio} is a visual low-code cloud-based integrated development environment used to develop workflows called automation processes using UiPath components. 
+    \item \textit{Orchestrator} is the central management tool for deployment and monitoring of process workflows and offers cloud storage capacity. 
+    \item \textit{Document Understanding} is in the center of interest for this research. From \textit{Document Understanding} the \textit{Extract Document Data} component is used in this project. This function takes a document as PDF of image as input and can be configured by selecting either a predefined or custom extractor model. It performs \ac{OCR} and applies the selected model to return the extracted data as a Document Data Object.
+    \item \textit{AI center} offers tools to manage and deploy \ac{AI} models for the use in automation processes. For this project it used when training the custom invoice data extraction model. \cite{uipath}
+
+\end{itemize}
+\subsection{Data Extraction Workflow}
+Using the just described UiPath products a simple workflow has been developed to automatically process the given invoices.
+Before the workflow execution, all documents are uploaded into a cloud storage bucket in the orchestrator. \Cref{pic:UiPath_1} outlines the data extraction process workflow that is used to produce the results for this research. 
+\begin{enumerate}
+    \item The process starts by retrieving a list of all files stored in the connected cloud storage bucket. 
+    \item The \textit{for-loop} iterates over all files and processes them in its inner process workflow. For each file the file name is stored in a local variable and is printed as a log message. 
+    \item The content of the current file is locally downloaded and forwarded to the \textit{Extract Document Data} component. The results are saved into a text file and uploaded to the results folder of the storage bucket in the orchestrator. The results are also printed as a log message. These to process steps are unfolded in \cref{pic:UiPath_2}.
+    \item Finally, the current file is uploaded to the processed folder and deleted from the input folder.
+\end{enumerate}
 \begin{figure}[ht]
     \centering 
     \includegraphics[width=0.7\textwidth]{pictures/Workflow.png}
     \caption{UiPath Data Extraction Workflow}
     \label{pic:UiPath_1}    % label the image for internal referencing
 \end{figure}
+\begin{figure}[ht]
+    \centering 
+    \includegraphics[width=0.7\textwidth]{pictures/extract.png}
+    \caption{UiPath Download Storage File \& Extract Document Data}
+    \label{pic:UiPath_2}    % label the image for internal referencing
+\end{figure}
+\subsection{Analyzing the results}
+To analyze the results Python and the Pandas framework are used. The results text files are loaded into a Pandas data table together with the database
+containing the actual values. When all the data is successfully imported, minor pre-processing activities like datatype conversions, stripping of leading spaces
+and unification of the the date format are performed.
+Using the the file name as unique identifier the extracted results are compared with the actual values. For \textit{Invoice Date, Invoice Number}
+and \textit{Amount} the exact match is required for the filed to be marked as correctly identified. 
+The \textit{Vendor} counts as correctly identified if the extracted string contains the actual vendor name as a substring. This additional 
+tolerance is needed to prevent that minor inaccuracies of the data in the database lead to correctly identified values to be marked as incorrect.
+Like this the results are made quantifiable and further statistical metrics can be calculated.
 \section{Model Selection and Architecture}
 %Justify the choice of generative AI model (e.g., GAN, VAE) based on the specific requirements of the task.
 %Outline the architecture of the selected model, including input and output layers, hidden layers, and activation functions.
@@ -20,3 +60,10 @@
 %Describe the evaluation metrics used to assess the model's performance 
 %Discuss the experimental setup and cross-validation techniques employed.
 \section{Evaluation Metrics}
+\subsection{Accuracy}
+\subsection{No result rate}
+\subsection{Accuracy excluding no results}
+\subsection{Document Score}
+The \textit{Document Score} indicates how many of the four target variable are correctly identified for a specific input document.
+The maximum score is 4 meaning that all four fields have been correctly identified. On the other hand, when no correct value has been identified
+the score is 0. All target variables are given the same weight.
