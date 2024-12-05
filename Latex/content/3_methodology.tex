@@ -50,31 +50,68 @@ Using the the file name as unique identifier the extracted results are compared 
 and \textit{Amount} the exact match is required for the filed to be marked as correctly identified. 
 The \textit{Vendor} counts as correctly identified if the extracted string contains the actual vendor name as a substring. This additional tolerance is needed to prevent that minor inaccuracies of the data in the database lead to correctly identified values to be marked as incorrect.
 Like this the results are made quantifiable and further statistical metrics can be calculated.
-\section{Model Selection and Architecture}
-%Justify the choice of generative AI model (e.g., GAN, VAE) based on the specific requirements of the task.
-%Outline the architecture of the selected model, including input and output layers, hidden layers, and activation functions.
 \section{Data Collection and Pre-processing}
 %Describe the process of gathering a diverse dataset of financial documents (e.g., invoices, receipts, contracts).
 % Explain the steps involved in data cleaning, normalization, and formatting for model training.
-For this project, a total of 322 invoice documents have been provided by the company \textit{Wegbereiter Engineering Consulting} located in Furtwangen, Germany. The data includes for instance invoices for office supplies and receipts from business trips. After screening all initial invoices 160 documents have been selected to the basis for the results. Repetitive invoices like the monthly invoices of internet service providers and gas station receipts have been excluded and limited to at most 6 of a kind to avoid the results having a one-sided bias if a single document type makes up a too big amount of the data
+For this project, a total of 322 invoice documents have been provided by the company \textit{Wegbereiter Engineering Consulting} located in Furtwangen, Germany. The data includes for instance invoices for office supplies and receipts from business trips. After screening all initial invoices 160 documents have been selected to the basis for the results. Repetitive invoices like the monthly invoices of internet service providers and gas station receipts have been excluded and limited to at most 6 of a kind to avoid the results having a one-sided bias if a single document type makes up a significant amount of the data.
+
 The selected invoices are dated between 2019 and 2024 and consist of 80 digitally created documents as well as 80 scans of printed documents. 
-Some samples of the invoices can be found in the appendix \cref{apprendix}.
+The language of the majority of the documents is German. However, there is a small amount of invoices in the languages English, Croatian and Slovenian. The non German invoices make up less than 10\%.
+The majority of invoices use Euro as currency and less than 5\% use a different currency. In particular, there are some documents using British Pound, Swiss Franc and Croatian Kuna. For this project for the amount only the number is relevant and the currency is disregarded.
+Some samples of the invoices can be found in the appendix.
+
+To be able to verify the extracted results a table containing the true values of each documents is created.
+For this, all 160 invoice documents have been manually analyzed and for each invoice the file name, vendor name, invoice number, payment amount and invoice date are stored in an Excel spreadsheet. \Cref{tab:db} displays the first four rows whithout the file name column. The raw data of this table as csv-file is available on Github \url{https://github.com/Paul01001000/HFU-Bachelor-Thesis}.
+
+\begin{table}[ht]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{llll}
+         Vendor & Invoice Number & Amount & Date\\
+         \midrule
+         Autohaus Siedle GmbH \& Co. KG & 110024940 & 79.85 & 04/24/2020 \\
+         Alurahmen24 & 1164/11/2023 & 23.7 & 11/27/2023\\
+         Amazon Services Europe S.à r.l. & DS-ASE-INV-DE-2022-320325323 & 47.99 & 10/13/2022 \\
+         Amazon EU S.à r.l. & DE261LJS0AEUI & 20.39 & 10/24/2022 \\
+         ... &&&
+    \end{tabular}}
+    \caption{First 4 rows of data verification table}
+    \label{tab:db}
+\end{table}
+\section{Model Selection and Architecture}
+%Justify the choice of generative AI model (e.g., GAN, VAE) based on the specific requirements of the task.
+%Outline the architecture of the selected model, including input and output layers, hidden layers, and activation functions.
+Because UiPath \textit{Document Understanding} is a commercial product no specific details about its way of working are publicly available.
+\subsection*{Predefined Model}
+As displayed in \cref{pic:UiPath_2} the predefined invoice understanding model extracts various fields including this projects target variables as well as \textit{shipping address} and \textit{Tax amount}. According to UiPath \cite{uipath} more than 30 different fields are supported. This model has been pretrained is expected to handle most standard cases. In principle, this model can be used for any language using the Latin alphabet. For Chinese or Indian invoices separate designated models exists.
+\subsection*{Custom Model}
+The custom model is based on the pretrained default model and not build from scratch. In contrast to the default model, the custom model only extracts the four fields corresponding to the target variables of this project. In addition, it has been trained on 110 documents from this project. The training process is explained in the following section.
 \section{Training Process}
 %Explain the training process
 %Describe the evaluation metrics used to assess the model's performance 
 %Discuss the experimental setup and cross-validation techniques employed.
+\Cref{fig:annotate} shows an example of the visual document annotating tool of UiPath Document Understanding. The vendor name is highlighted in bright red. The invoice number is highlighted in yellow. The invoice date is highlighted in purple. And finally the payment amount is highlighted in pink.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{pictures/annotate.png}
+    \caption{Document Annotation in UiPath Document Understanding}
+    \label{fig:annotate}
+\end{figure}
 \section{Evaluation Metrics}
 \subsection{Accuracy}
 The accuracy indicates the percentage of cases where the extracted value is correctly identified. \textit{Correct Results} is the count of the correct results and \textit{All results} is the total number of results.
+
 \[ Accuracy = \frac{Correct \ Results}{All \ Results}\]
 When comparing different models or target variable the accuracy can be used as an indicator for the performance of the model.
 \subsection{Null rate}
 The \textit{Null rate} is the percentage of cases where the extractor has not returned a value at all. \textit{Null Results} is the number of Null values.
+
 \[ Null \ Rate = \frac{Null \ Results}{All \ Results}\]
 The Null rate is of interest when determining the model performance on different target variables.
 \subsection{Cleaned Accuracy}
 The \textit{cleaned accuracy} is the accuracy when excluding all null values beforehand. In other words, it indicates the percentage of cases where the correct value is returned given a value is returned.
-\[ Cleaned \ Accuracy = \frac{Correct \ Results}{All \ Results - Null \ Results}\]
+
+\[ Cleaned \ Accuracy = \frac{Correct \ Results}{All \ Results - Null \ Results}\] 
 \[Cleaned \ Accuracy \geq Accuracy\]
 The cleaned accuracy is important, because null results can be easily identified and manually reworked, while actual incorrect results are more complicated to identify.
 \subsection{Document Score}
