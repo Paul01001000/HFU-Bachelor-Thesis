@@ -2,11 +2,11 @@
 
 \section{Experimental Setup}
 \subsection{Goal and Overview}
-The aim of this research is to investigate the capabilities of a state-of-the-art \acl{ML} Document Understanding system for automated invoice processing. For this purpose \textit{UiPath Document Understanding} is selected as subject of investigation. As target variables vendor, invoice number, payment amount and invoice date are selected. These targets are selected for two main reasons. On the one hand, all four variables are relevant for the creation of an invoice booking in an ERP system. On the other hand, the correct extraction of the different variables requires different degrees of document understanding capabilities. As test data 160 real invoice and receipt documents used.
+The aim of this research is to investigate the capabilities of a state-of-the-art \acl{ML} Document Understanding system for automated invoice processing. For this purpose \textit{UiPath Document Understanding} is selected as subject of investigation. As target variables vendor, invoice number, payment amount and invoice date are selected. These targets are selected for two main reasons. On the one hand, all four variables are relevant for the creation of an invoice booking in an ERP system. On the other hand, the correct extraction of the different variables requires different degrees of document understanding capabilities. As test data 160 real invoice and receipt documents are used.
 
-The experiment consist of two stages. In the first stage, the default pre-trained model for invoice understanding by UiPath is used. All 160 documents are presented as input and the results on the different target variables are compared. 
+The experiment consists of two stages. In the first stage, the out-of-the-box pre-trained model for invoice understanding by UiPath is used. All 160 documents are presented as input and the results on the different target variables are compared. 
 
-For the second stage, a new custom model based on the default pre-trained model is instantiated and trained with additional examples. For this the invoice documents are randomly separated into one subset for training and one for testing. To evaluate the performance of the custom model, the results from the first stage on the test set are used as benchmark. 
+For the second stage, a new custom model based on the out-of-the-box pre-trained model is instantiated and trained with additional examples. For this, the invoice documents are randomly separated into one subset for training and one for testing. To evaluate the performance of the custom model, the results from the first stage on the test set are used as benchmark. 
 
 All UiPath workflow files that have been used for this research as well as the python script for analyzing the results and the raw data can be accessed on GitHub \url{https://github.com/Paul01001000/HFU-Bachelor-Thesis}.
 
@@ -16,7 +16,7 @@ According to Gartner \cite{gartner2023magicquadrant} UiPath is one of the leadin
 \begin{itemize}
     \item \textit{Studio} is a visual low-code cloud-based integrated development environment used to develop workflows called automation processes using UiPath components. 
     \item \textit{Orchestrator} is the central management tool for deployment and monitoring of process workflows and offers cloud storage capacity. 
-    \item \textit{Document Understanding} is in the center of interest for this research. From \textit{Document Understanding} the \textit{Extract Document Data} component is used in this project. This function takes a document as PDF of image as input and can be configured by selecting either a predefined or custom extractor model. It performs \ac{OCR} and applies the selected model to return the extracted data as a Document Data Object.
+    \item \textit{Document Understanding} is in the center of interest for this research. From \textit{Document Understanding} the \textit{Extract Document Data} component is used in this project. This function takes a document as PDF or image as input and can be configured by selecting either a predefined or custom extractor model. It performs \ac{OCR} and applies the selected model to return the extracted data as a Document Data Object.
     \item \textit{AI center} offers tools to manage and deploy \ac{AI} models for the use in automation processes. For this project it used when training the custom invoice data extraction model. \cite{uipath}
 \end{itemize}
 
@@ -44,15 +44,18 @@ Before the workflow execution, all documents are uploaded into a cloud storage b
     \item Finally, the current file is uploaded to the processed folder and deleted from the input folder.
 \end{enumerate}
 
-The \textit{Extract Document Data} component is part of the \textit{UiPath IntelligentOCR} package. According to UiPath \cite{uipath,uipathdoc} the input document is first processed by the \textit{UiPath Document OCR} engine, followed by the information extraction using the selected model. If the input document is classified as an image, the \textit{Digitize Document} activity is applied to extract the text along with metadata. For digitally created PDF documents the \textit{Read PDF with OCR} activity is used instead to solely extract some metadata about the documents.
+The \textit{Extract Document Data} component is part of the \textit{UiPath IntelligentOCR} package. According to UiPath \cite{uipath,uipathdoc} the input document is first processed by the \textit{UiPath Document OCR} engine. If the input document is classified as an image, the \textit{Digitize Document} activity is applied to extract the text along with metadata. For digitally created PDF documents the \textit{Read PDF with OCR} activity is used instead to solely extract some metadata about the documents.
+In a second step, the information is extracted using the selected model.
 
 \subsection{Analyzing the results}
-To analyze the results Python together with the Pandas framework are used. The results text files are loaded into a Pandas data table together with the database file
+To analyze the results, the Pandas library in Python is used. The results text files are loaded into a Pandas data table together with the database file
 containing the true values of all invoices. When all the data is successfully imported, minor pre-processing activities like datatype conversions, stripping of leading spaces and unification of the the date format are performed.
 Using the the file name as unique identifier the extracted results are compared with the actual values. For \textit{Invoice Date, Invoice Number}
-and \textit{Amount} the exact match is required for the filed to be marked as correctly identified. 
+and \textit{Amount} the exact match is required for the field to be marked as correctly identified. 
 The \textit{Vendor} counts as correctly identified if the extracted string contains the actual vendor name as a substring. This additional tolerance is needed to prevent that minor inaccuracies of the data in the database lead to correctly identified values to be marked as incorrect.
 Like this the results are made quantifiable and further statistical metrics can be calculated.
+
+\newpage
 \section{Data Collection and Pre-processing}
 %Describe the process of gathering a diverse dataset of financial documents (e.g., invoices, receipts, contracts).
 % Explain the steps involved in data cleaning, normalization, and formatting for model training.
@@ -81,44 +84,50 @@ For this, all 160 invoice documents have been manually analyzed and for each inv
     \caption{First 4 rows of data verification table}
     \label{tab:db}
 \end{table}
+
+\newpage
 \section{Model Selection}
 %Justify the choice of generative AI model (e.g., GAN, VAE) based on the specific requirements of the task.
 %Outline the architecture of the selected model, including input and output layers, hidden layers, and activation functions.
 Because UiPath \textit{Document Understanding} is a commercial product no specific details about its way of working and architecture are publicly available.
 \subsection*{Out-of-the-box Model}
-In the first stage of the project the out-of-the-box \acf{ML} model for invoice processing. As displayed in \cref{pic:UiPath_2} the default invoice understanding model extracts various information about the customer, vendor, invoice items and payment details. The extracted fields including this projects target variables as well as \textit{shipping address} and \textit{Tax amount}. According to UiPath \cite{uipathdoc} more than 30 different fields and items are supported as well as a currency classifier. This model has been pretrained and can be used right away without additional training. It is expected to handle most standard cases. In principle, it can be used for any language using the Latin alphabet. For Chinese or Indian invoices separate designated models exists.
+In the first stage of the project, the out-of-the-box \acf{ML} model for invoice processing is investigated. As displayed in \cref{pic:UiPath_2} the default invoice understanding model extracts various information about the customer, vendor, invoice items and payment details. The extracted fields including this projects target variables as well as \textit{shipping address} and \textit{Tax amount}. According to UiPath \cite{uipathdoc} more than 30 different fields and items are supported as well as a currency classifier. This model has been pre-trained and can be used right away without additional training. It is expected to handle most standard cases. In principle, it can be used for any language using the Latin alphabet. For Chinese or Indian invoices separate designated models exists.
 \subsection*{Custom Model}
-The custom model is based on the pretrained default model and not build from scratch. In contrast to the default model, the custom model only extracts exactly the four fields corresponding to the target variables of this project. In addition, it has been trained on 110 documents from this project. The training process is explained in the following section.
+The custom model is based on the pre-trained default model and not built from scratch. In contrast to the default model, the custom model only extracts exactly the four fields corresponding to the target variables of this project. In addition, it has been trained on 110 documents from this project. The training process is explained in the following section.
+
+\newpage
 \section{Training Process}
 %Explain the training process
 %Describe the evaluation metrics used to assess the model's performance 
 %Discuss the experimental setup and cross-validation techniques employed.
 
-Before training the model, the available data has to be split into a train and a test set. Using the \textit{train\_test\_split} method of the \textit{sklearn} framework in Python, 55 scanned files and 55 digital PDF files are selected as training data at random. The remaining 50 files will be used for testing the custom model.
+Before training the model, the available data has to be split into a train and a test set. Using the \textit{train\_test\_split} method of the \textit{sklearn} library in Python, 55 scanned files and 55 digital PDF files are selected as training data at random. The remaining 50 files will be used for testing the custom model.
 
-To start the training process the 110 files are uploaded to a new \textit{UiPath Document Understanding Project}. When creating a new project a base model can be selected. In this case, the default invoice extraction model is selected as base model. As next step the data extraction fields are selected. For this project only the four fields \textit{Vendor Name, Invoice Number, Document Date} and \textit{Total Amount} are selected.
+To start the training process, the 110 files are uploaded to a new \textit{UiPath Document Understanding Project}. When creating a new project, a base model can be selected. In this case, the default invoice extraction model is selected as the base model. As next step, the data extraction fields are defined. For this project only the four fields \textit{Vendor Name, Invoice Number, Document Date} and \textit{Total Amount} are selected.
 
 All uploaded files have to be annotated with the expected values before training the new custom model.
-\Cref{fig:annotate} shows an example of the visual document annotating tool of UiPath Document Understanding. The vendor name is highlighted in bright red. The invoice number is highlighted in yellow. The invoice date is highlighted in purple. And finally the payment amount is highlighted in pink.
+\Cref{fig:annotate} shows an example of the visual document annotation tool of UiPath Document Understanding. The vendor name is highlighted in bright red. The invoice number is highlighted in yellow. The invoice date is highlighted in purple. And finally, the payment amount is highlighted in pink.
 
-\begin{figure}
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.9\linewidth]{pictures/annotate.png}
     \caption{Document Annotation in UiPath Document Understanding}
     \label{fig:annotate}
 \end{figure}
 
-During the supervised training the system uses the information from the annotation to improve the accuracy of the model outputs. After the training is complete, the new model is ready to be used in an automation project as part of the \textit{Document Data Extraction} component. 
+During the supervised training, the system uses the information from the annotation to improve the accuracy of the model outputs. After the training is completed, the new model is ready to be used in an automation project as part of the \textit{Document Data Extraction} component. 
 
-Based on the model performance during the training the UiPath environment evaluates the custom model on a scale from 0-100. In this case the trained model scored at 73, which indicates that the model will likely produce good results, but there is still room for improvement. In the more detailed \textit{metrics} tab shown in \cref{fig:train-eval}, it is indicated the performance of the \textit{Vendor Name} field is rated as average, while the other fields score excellent ratings.
+Based on the model performance during the training process the UiPath environment evaluates the custom model on a scale from 0 - 100. In this case, the trained model score is 73, which indicates that the model will likely produce good results, but there is still room for improvement. In the more detailed \textit{metrics} tab shown in \cref{fig:train-eval}, for each field the number of training pages, the self-evaluation rating and the accuracy on the training data are displayed. 
+It is indicated the performance of the \textit{Vendor Name} field is rated as average, because its accuracy is 58 \%. The other fields score excellent ratings and have accuracy scores of at least 95 \%. However, it is important to mention that the UiPath self-evaluation requires an exact match when checking the accuracy, while for the manual evaluation for the vendor a field the output string only needs to contain the correct value as substring.
 
-\begin{figure}
+\begin{figure}[ht]
     \centering
-    \includegraphics[width=0.5\linewidth]{pictures/training_eval.png}
-    \caption{Custom model evaluation after training}
+    \includegraphics[width=0.6\linewidth]{pictures/training_eval.png}
+    \caption{Custom model self-evaluation after training}
     \label{fig:train-eval}
 \end{figure}
 
+\newpage
 \section{Evaluation Metrics}
 \subsection{Accuracy}
 The accuracy indicates the percentage of cases where the extracted value is correctly identified. \textit{Correct Results} is the count of the correct results and \textit{All results} is the total number of results.
@@ -140,3 +149,4 @@ The cleaned accuracy is important, because null results can be easily identified
 The \textit{Document Score} indicates how many of the four target variable are correctly identified for a specific input document.
 The maximum score is 4 meaning that all four fields have been correctly identified. On the other hand, when no correct value has been identified
 the score is 0. All target variables are given the same weight.
+Because the document score of a single document cannot provide much information about the performance of the document understanding model, in the results chapter histograms will be used to display the distribution of the different document scores. In addition, the reverse cumulative histogram perspective will be used to indicate how many times a document score of at least 1, 2, 3 or 4 has been scored.

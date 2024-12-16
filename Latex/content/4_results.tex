@@ -5,6 +5,8 @@
 %Analyze the model's strengths and weaknesses in handling different types of financial documents.
 %Compare the performance of the generative AI model to existing methods.
 
+To analyze the results of the out-of-the-box model, the performances on the different target variables will be compared across the different metrics. \Cref{table:Field_Com} shows the \textit{Accuracy, Null rate} and \textit{Cleaned Accuracy} for each extracted field. 
+
 \begin{table}[ht]   % table position
     \centering
     \footnotesize
@@ -22,6 +24,13 @@
     \label{table:Field_Com}
 \end{table}
 
+The fields where the model reaches the highest accuracy are \textit{Amount} and \textit{Invoice Date} with 86.250 \% and 86.875 \% respectively. The same two fields have the highest \textit{Cleaned Accuracy} with over 97 \%. The \textit{Invoice Number} field has the lowest accuracy with 70.625 \% and the highest \textit{Null rate} with 26.25 \%. The high \textit{Null rate} is the main factor for the relatively low overall accuracy. Looking at the \textit{Cleaned Accuracy} the model extracted the correct \textit{Invoice Number} 95.76 \% of the time whenever it returned a non-null output. Having the lowest \textit{Null rate} of 6.25 \% on the vendor field, the model's accuracy of 81.875 \% is close to the \textit{Cleaned Accuracy} of 87.33 \%, which is the lowest among all fields. 
+
+It can be noticed that the results for \textit{Amount} and \textit{Invoice Date} lie within one percentage point across all categories. A potential explanation for this similarity is that both field have a recognizable data format and are typically found in a constant area of most invoices. In particular, the \textit{Invoice Date} is often written in the upper right are of an invoice, while the \textit{Amount} is usually displayed on the right hand side of the listing of the line items.
+
+In turn, \textit{Vendor} and \textit{Invoice Number} occur in a less predictable way and have less recognizable formats, partly explaining the model's lower accuracy on those fields.
+
+Another factor investigated for potentially having an effect on the model's performance is the nature of the input document. In particular, whether it is a digitally created PDF document of the scan of a printed document. The scanned documents have to be processed with \ac{OCR} before the data extraction. This adds an additional process step that may be the cause for errors. Because of this it is suspected that the model will have a lower accuracy on those documents. The comparison between the model's performance on digitally created PDF and scanned invoice documents is shown in \cref{table:Field_Com_Scan_PDF}.
 
 \begin{table}[ht]   % table position
     \centering
