@@ -28,7 +28,24 @@ The fields where the model reaches the highest accuracy are \textit{Amount} and 
 
 It can be noticed that the results for \textit{Amount} and \textit{Invoice Date} lie within one percentage point across all categories. A potential explanation for this similarity is that both field have a recognizable data format and are typically found in a constant area of most invoices. In particular, the \textit{Invoice Date} is often written in the upper right are of an invoice, while the \textit{Amount} is usually displayed on the right hand side of the listing of the line items.
 
-In turn, \textit{Vendor} and \textit{Invoice Number} occur in a less predictable way and have less recognizable formats, partly explaining the model's lower accuracy on those fields.
+In turn, \textit{Vendor} and \textit{Invoice Number} occur in a less predictable way and have less recognizable formats, partly explaining the model's lower accuracy on those fields. 
+
+\begin{figure}[!ht]
+    \centering 
+    \includegraphics[width=0.7\textwidth]{pictures/results.png}
+    \caption{Distribution of Document Scores}
+    \label{pic:results_1}    % label the image for internal referencing
+\end{figure}
+\begin{figure}[!ht]
+    \centering 
+    \includegraphics[width=0.7\textwidth]{pictures/results_cum.png}
+    \caption{Reverse Cumulative Distribution of Document Scores}
+    \label{pic:results_1_cum}    % label the image for internal referencing
+\end{figure}
+
+To evaluate the usefulness of the model in a real-world context, the \textit{Document Score} indicates how many target variables have been correctly identified. \Cref{pic:results_1} shows the histogram of the occurrences of the document scores between 1 and 4. It can be noted that the model always identified at least one variable correctly. Also, 74 times all 4 field have been correctly identified, which is 46.25 \% of the time. Only 5 times just one field has been correctly extracted.
+
+The plain distribution only shows the frequency of the individual scores and ignores that if the model identifies 3 fields correctly it also identified at least 2 fields correctly. Because of this, the reverse cumulate distribution shown in \cref{pic:results_1_cum} is used to indicate how many documents received a document score of at least the given score. 132 times and 82.5 \% of the time at least 3 fields have been correctly identified.
 
 Another factor investigated for potentially having an effect on the model's performance is the nature of the input document. In particular, whether it is a digitally created PDF document of the scan of a printed document. The scanned documents have to be processed with \ac{OCR} before the data extraction. This adds an additional process step that may be the cause for errors. Because of this it is suspected that the model will have a lower accuracy on those documents. The comparison between the model's performance on digitally created PDF and scanned invoice documents is shown in \cref{table:Field_Com_Scan_PDF}.
 
@@ -59,17 +76,21 @@ Another factor investigated for potentially having an effect on the model's perf
 
 \begin{figure}[ht]
     \centering 
-    \includegraphics[width=0.7\textwidth]{pictures/results.png}
+    \includegraphics[width=0.7\textwidth]{pictures/scan_pdf.png}
     \caption{Distribution of Document Scores}
-    \label{pic:results_1}    % label the image for internal referencing
+    \label{pic:scan_pdf_1}    % label the image for internal referencing
 \end{figure}
 \begin{figure}[ht]
     \centering 
-    \includegraphics[width=0.7\textwidth]{pictures/results_cum.png}
+    \includegraphics[width=0.7\textwidth]{pictures/scan_pdf_cum.png}
     \caption{Reverse Cumulative Distribution of Document Scores}
-    \label{pic:results_1_cum}    % label the image for internal referencing
+    \label{pic:scan_pdf_1_cum}    % label the image for internal referencing
 \end{figure}
 
+When comparing the model's performance between PDF and scanned invoices, on the \textit{Vendor} and \textit{Invoice Number} fields lower accuracies for scanned documents can be observed. The accuracy on the \textit{Vendor} field is more than 20 percentage points less compared to the results of PDF documents. On the \textit{Invoice Number} field the two accuracy scores are more than 30 percentage points apart. This finding supports the hypothesis that the model's accuracy is lower on documents that are processed by \ac{OCR}.
+However, on the \textit{Amount} and \textit{Invoice Date} field the opposite can be observed. On both fields the model's accuracy is higher on the scanned documents.
+
+\newpage
 \section{Custom Model Performance}
 
 \begin{table}[ht]   % table position
@@ -157,4 +178,5 @@ Another factor investigated for potentially having an effect on the model's perf
     \label{table:Model_Bench_Date}
 \end{table}
 
+\newpage
 \section{Interpretation of Key Findings}
