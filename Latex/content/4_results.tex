@@ -47,7 +47,7 @@ To evaluate the usefulness of the model in a real-world context, the \textit{Doc
 
 The plain distribution only shows the frequency of the individual scores and ignores that if the model identifies 3 fields correctly it also identified at least 2 fields correctly. Because of this, the reverse cumulate distribution shown in \cref{pic:results_1_cum} is used to indicate how many documents received a document score of at least the given score. 132 times and 82.5 \% of the time at least 3 fields have been correctly identified.
 
-Another factor investigated for potentially having an effect on the model's performance is the nature of the input document. In particular, whether it is a digitally created PDF document of the scan of a printed document. The scanned documents have to be processed with \ac{OCR} before the data extraction. This adds an additional process step that may be the cause for errors. Because of this it is suspected that the model will have a lower accuracy on those documents. The comparison between the model's performance on digitally created PDF and scanned invoice documents is shown in \cref{table:Field_Com_Scan_PDF}.
+Another factor investigated for potentially having an effect on the model's performance is the nature of the input document. In particular, whether it is a digitally created PDF document of the scan of a printed document. The scanned documents have to be processed with \ac{OCR} before the data extraction. This adds an additional process step that may be the cause for errors. Because of this, it is suspected that the model will have a lower accuracy on those documents. The comparison between the model's performance on digitally created PDF and scanned invoice documents is shown in \cref{table:Field_Com_Scan_PDF}.
 
 \begin{table}[ht]   % table position
     \centering
@@ -74,24 +74,32 @@ Another factor investigated for potentially having an effect on the model's perf
     \label{table:Field_Com_Scan_PDF}
 \end{table}
 
-\begin{figure}[ht]
+When comparing the models' performance between PDF and scanned invoices, for the \textit{Vendor} and \textit{Invoice Number} fields lower accuracies for scanned documents can be observed. For the \textit{Vendor} field the models' accuracy on PDF is 92.5 \% and the \textit{Cleaned Accuracy} 97.37 \%. On scanned documents these values drop to 71.25 \% and 77.03 \%. The accuracy and the \textit{Cleaned Accuracy} on the \textit{Vendor} field for scanned documents are more than 20 percentage points lower compared to the results of PDF documents, while the \textit{Null rates} are close with 5 \% for PDF and 7.5 \% for scanned documents. On the \textit{Invoice Number} field the two accuracy scores are more than 30 percentage points apart with 86.25 \% for PDF and 55.0 \% for scan. At the same, the \textit{Cleaned Accuracy} for both document types are almost equal with 95.83 \% and 95.65 \%. This can be explained by looking at the \textit{Null rate}, which is 10.0 \% for PDF and 42.5 \% for scanned invoices. The finding for the \textit{Vendor} and \textit{Invoice Number} fields support the hypothesis that the models' accuracy is lower on documents that are processed by \ac{OCR}.
+
+However, on the \textit{Amount} and \textit{Invoice Date} field the opposite can be observed. For both fields, the models' accuracy is higher on the scanned documents  with 83.75 \% and 88.75 \% for \textit{Amount} and 85.0 \% and again 88.75 \% for the \textit{Invoice date} field. Even though the PDF and scan accuracy are in a range of 5 percentage points, this finding contradicts the initial hypothesis. For the \textit{Amount} field the \textit{Null rate} of 13.75 \% for PDF documents is exactly 5 percentage points higher than for scanned documents, while the \textit{Cleaned Accuracy} scores are almost identical with 97.1 \% and 97.26 \%. The results on the \textit{Invoice Date} field look similar with \textit{Null rate} of 11.25 \% and 10.0 \% as well as \textit{Cleaned Accuracies} of 95.77 \% and 98.61 \%.
+
+Based on those results, the hypothesis that the models' accuracy is lower on scanned invoice documents, because of the \ac{OCR} process cannot be proven as correct. The findings on the \textit{Amount} and \textit{Invoice Date} even seen to contradict this hypothesis. However, it has to be noted that the values are very close for all metrics.
+
+\begin{figure}[!ht]
     \centering 
     \includegraphics[width=0.7\textwidth]{pictures/scan_pdf.png}
     \caption{Distribution of Document Scores}
     \label{pic:scan_pdf_1}    % label the image for internal referencing
 \end{figure}
-\begin{figure}[ht]
+\begin{figure}[!ht]
     \centering 
     \includegraphics[width=0.7\textwidth]{pictures/scan_pdf_cum.png}
     \caption{Reverse Cumulative Distribution of Document Scores}
     \label{pic:scan_pdf_1_cum}    % label the image for internal referencing
 \end{figure}
 
-When comparing the model's performance between PDF and scanned invoices, on the \textit{Vendor} and \textit{Invoice Number} fields lower accuracies for scanned documents can be observed. The accuracy on the \textit{Vendor} field is more than 20 percentage points less compared to the results of PDF documents. On the \textit{Invoice Number} field the two accuracy scores are more than 30 percentage points apart. This finding supports the hypothesis that the model's accuracy is lower on documents that are processed by \ac{OCR}.
-However, on the \textit{Amount} and \textit{Invoice Date} field the opposite can be observed. On both fields the model's accuracy is higher on the scanned documents.
+Looking at the histogram shown in \cref{pic:scan_pdf_1} and the reverse cumulative histogram in \cref{pic:scan_pdf_1_cum} of the document scores for scanned and PDF invoice documents, 46 PDF documents and 28 scanned documents can be observed in the category with a perfect document score of 4. 
 
 \newpage
 \section{Custom Model Performance}
+To evaluate the performance of the custom model, its results on the test data set are compared to a benchmark. As benchmark the performance of the out-of-the-box model is used limited to the results on the test data set to ensure the same foundation for comparison. In contrast to the evaluation of the out-of-box model 2.1 not the performance on the different target variables are compared to each other but the performances of the custom model is compared to the benchmark for each field separately.
+
+The custom model is built on the default invoice data extraction model of UiPath that is the benchmark. Because the custom model has been trained on additional training data, it is expected to produce more accurate results than the benchmark results.
 
 \begin{table}[ht]   % table position
     \centering
@@ -100,13 +108,13 @@ However, on the \textit{Amount} and \textit{Invoice Date} field the opposite can
         \toprule    % separator line
         Vendor  & Accuracy  & Null rate & Cleaned Accuracy \\
         \midrule    % separator line
-        Model               & 74.00 \%   & 8.00 \%   & 82.61 \% \\
+        Custom Model               & 74.00 \%   & 8.00 \%   & 82.61 \% \\
         Benchmark           & 76.00 \%   & 12.00 \%  & 86.36 \%\\
         \midrule    % separator line
-        Model on PDF        & 75.00 \%   & 12.50 \%  & 90.48 \% \\
+        Custom Model on PDF        & 75.00 \%   & 12.50 \%  & 90.48 \% \\
         Benchmark on PDF    & 87.50 \%   & 12.50 \%  & 100.00 \% \\
         \midrule    % separator line
-        Model on Scan       & 73.08 \%  & 3.85 \%   & 76.00 \% \\
+        Custom Model on Scan       & 73.08 \%  & 3.85 \%   & 76.00 \% \\
         Benchmark on Scan   & 65.38 \%  & 11.54 \%  & 73.91 \% \\
 
         \bottomrule % separator line
@@ -114,20 +122,21 @@ However, on the \textit{Amount} and \textit{Invoice Date} field the opposite can
     \caption{Results on Vendor Field}
     \label{table:Model_Bench_Vendor}
 \end{table}
+In \cref{table:Model_Bench_Vendor} the results for the \textit{Vendor} field of the custom model and the benchmark are compared. 
 \begin{table}[ht]   % table position
     \centering
     \footnotesize
     \begin{tabular}{c|rrr} % columns and their alignment
         \toprule    % separator line
-        Invoice Number  & Accuracy  & Null Percentage & Accuracy excluding Null \\
+        Invoice Number  & Accuracy  & Null rate & Cleaned Accuracy \\
         \midrule    % separator line
-        Model               & 88.00 \%   & 6.00 \%   & 93.62 \% \\
+        Custom Model               & 88.00 \%   & 6.00 \%   & 93.62 \% \\
         Benchmark           & 78.00 \%   & 22.00 \%  & 100.00 \%\\
         \midrule    % separator line
-        Model on PDF        & 95.83 \%   & 4.17 \%  & 100.00 \% \\
+        Custom Model on PDF        & 95.83 \%   & 4.17 \%  & 100.00 \% \\
         Benchmark on PDF    & 87.50 \%   & 12.50 \%  & 100.00 \% \\
         \midrule    % separator line
-        Model on Scan       & 80.77 \%  & 7.69 \%   & 87.50 \% \\
+        Custom Model on Scan       & 80.77 \%  & 7.69 \%   & 87.50 \% \\
         Benchmark on Scan   & 69.23 \%  & 30.77 \%  & 100.00 \% \\
 
         \bottomrule % separator line
@@ -140,15 +149,15 @@ However, on the \textit{Amount} and \textit{Invoice Date} field the opposite can
     \footnotesize
     \begin{tabular}{c|rrr} % columns and their alignment
         \toprule    % separator line
-        Amount  & Accuracy  & Null Percentage & Accuracy excluding Null \\
+        Amount  & Accuracy  & Null rate & Cleaned Accuracy \\
         \midrule    % separator line
-        Model               & 88.00 \%   & 6.00 \%   & 93.62 \% \\
+        Custom Model               & 88.00 \%   & 6.00 \%   & 93.62 \% \\
         Benchmark           & 90.00 \%   & 8.00 \%  & 97.83 \%\\
         \midrule    % separator line
-        Model on PDF        & 83.33 \%   & 8.33 \%  & 90.91 \% \\
+        Custom Model on PDF        & 83.33 \%   & 8.33 \%  & 90.91 \% \\
         Benchmark on PDF    & 87.50 \%   & 12.50 \%  & 100.00 \% \\
         \midrule    % separator line
-        Model on Scan       & 92.31 \%  & 3.85 \%   & 96.00 \% \\
+        Custom Model on Scan       & 92.31 \%  & 3.85 \%   & 96.00 \% \\
         Benchmark on Scan   & 92.31 \%  & 3.85 \%  & 96.00 \% \\
 
         \bottomrule % separator line
@@ -161,15 +170,15 @@ However, on the \textit{Amount} and \textit{Invoice Date} field the opposite can
     \footnotesize
     \begin{tabular}{c|rrr} % columns and their alignment
         \toprule    % separator line
-        Invoice Date  & Accuracy  & Null Percentage & Accuracy excluding Null \\
+        Invoice Date  & Accuracy  & Null rate & Cleaned Accuracy \\
         \midrule    % separator line
-        Model               & 90.00 \%   & 8.00 \%   & 97.83 \% \\
+        Custom Model               & 90.00 \%   & 8.00 \%   & 97.83 \% \\
         Benchmark           & 84.00 \%   & 12.00 \%  & 95.45 \%\\
         \midrule    % separator line
-        Model on PDF        & 87.50 \%   & 8.33 \%  & 95.45 \% \\
+        Custom Model on PDF        & 87.50 \%   & 8.33 \%  & 95.45 \% \\
         Benchmark on PDF    & 83.33 \%   & 12.50 \%  & 95.24 \% \\
         \midrule    % separator line
-        Model on Scan       & 92.31 \%  & 7.69 \%   & 100.00 \% \\
+        Custom Model on Scan       & 92.31 \%  & 7.69 \%   & 100.00 \% \\
         Benchmark on Scan   & 84.62 \%  & 11.54 \%  & 95.65 \% \\
 
         \bottomrule % separator line
@@ -180,3 +189,11 @@ However, on the \textit{Amount} and \textit{Invoice Date} field the opposite can
 
 \newpage
 \section{Interpretation of Key Findings}
+It can be concluded that the key findings point out some weaknesses of the use of \acl{AI} for invoice processing:
+\begin{enumerate}
+    \item The availability of training data in large quantities is necessary to create models that can produce accurate results. However, it is challenging to acquire enough actual invoices for the training purposes, because there is a high variance in the structure of invoice documents from different sources. At the same time, some invoices contain sensitive information, which means that those documents need to be discarded or extensive pre-processing is necessary. Also the training process is time consuming, because all documents have to be manually annotated with the desired output.
+    \item It has to be noted that invoice documents are designed to be read and processed by humans and not by \ac{AI}. A human with some experience has no difficulty accurately identifying the relevant data from an invoice document, while an \ac{AI}-system cannot match human performance even after being trained with hundreds of training invoices.
+    \item Finally, the processing of invoice documents with \ac{AI} can be described as prone to errors and inefficient. The input document undergoes \ac{OCR} followed by information extraction using several \ac{NLP} techniques. Depending on the required computational capacity especially the training can become an energy task, while still producing inaccurate results.
+\end{enumerate}
+These findings suggest against the use of \ac{AI} technology for automated invoice processing, because more accurate and efficient approaches exist. For example, the utilization of an electronic billing standard allows the issuance and receipt of invoices in a digital machine-readable format like XML. Those files can be automatically created by an \ac{ERP} system and processed by an efficient parsing algorithm.
+Because of this, it is suggested to establish a purely digital invoice receipt workflow based on \ac{EDI} or another electronic billing standard, instead of processing invoice documents in PDF format with \ac{AI}.
