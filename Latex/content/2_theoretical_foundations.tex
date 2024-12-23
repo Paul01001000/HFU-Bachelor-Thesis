@@ -1,7 +1,7 @@
 \chapter{Theoretical Background}
 
 \section{Document Understanding}
-\subsection{Overview and History}
+\subsection{Definition and Overview}
 In general, Document Understanding is the process of ...
 Traditionally, Document Understanding has been mainly concerned with the conversion of paper-based documents into a format that is readable for a computer \cite{taylor1994integrated}. 
 With advancing digitization, Document Understanding covers the processing of digitally created documents as well. 
@@ -62,18 +62,41 @@ For the 7th \ac{MUC} Black et al.\cite{black1998facile} developed a rule-based \
 Besides its rigid nature, another major disadvantage of the rule-based approach is the labor intensity that goes into the manual definition of all rules. A suggested alternative are learning \ac{NER} systems that use \ac{ML} techniques and neural networks instead of set in stone rules.
 \cite{hobbs2010information}
 
+\newpage
 \section{Natural Language Processing}
 \subsection{Overview and History}
-\ac{NLP} is concerned with the computer-based processing of information written in natural language. Typical tasks of \ac{NLP} are text classification, natural language understanding, and generation. For the first time, the automated processing and generation of natural language have been mentioned by Alan Turin in 1950 \cite{Turing1950}. Since then, \ac{NLP}-systems evolved from the initial rule-based approach to statistical concepts and finally using \ac{ML} and \acfp{ANN}.
-\ac{NLP} is used for machine translation, text summarization, and chatbots.
-In the context of Document Understanding, \ac{NLP} provides important tools and techniques for \acf{IE}. 
-\cite{church1995commercial,aiello2002document}
+\ac{NLP} is concerned with the computer-based processing of information written in natural language. Typical tasks of \ac{NLP} are text classification, natural language understanding, and generation. \ac{NLP} is used for machine translation, text summarization, and chatbots.In the context of Document Understanding, \ac{NLP} provides important tools and techniques for \acf{IE}. \cite{aiello2002document}
+
+For the first time, the automated processing and generation of natural language have been mentioned by Alan Turin in 1950 \cite{Turing1950}. Since then, \ac{NLP}-systems evolved from the initial rule-based approach to statistical concepts and finally using \ac{ML} and \acfp{ANN}. Before the 1980s, most \ac{NLP} systems relied on complex hand-written rules. Up until the early 2000s, statistical models have been the dominant method for \ac{NLP}. The first notable breakthrough of neural \ac{NLP} happened in 2003, when Benio et al. \cite{bengio} outperformed the state-of-the-art statistical language models using an \ac{ANN}.
+
+Independent from the technical approach, any \ac{NLP}-system is based on a context specific text corpus. Text corpora are structured datasets containing large amounts of texts in a digital format. Usually, a text corpus is organized in a way to be easy to analyze and contains mainly test samples from real-world texts. For instance, academic journal repositories and Wikipedia can be seen as examples for text corpora. With a text corpus, it is possible to gain information about word and letter frequencies and patterns. These information are important for the construction or training of an \ac{NLP}-system.
+\cite{church1995commercial,vzivzka2019text}
+
+\subsection{Statistical NLP}
+Statistical \ac{NLP} models aim to learn the probability of specific sequences of words that occur in the underlying text corpus.
+The traditional statistical approach is based on so-called n-grams, which are instances of words that are commonly grouped together. Examples for bi-grams (\textit{n = 2}) are "Artificial Intelligence" or "New York". "Natural Language Processing" is an example of an n-gram, where \textit{n = 3}. N-gram models create probability tables for the next word given the current word. Disadvantages of this approach are that n-gram models cannot capture relations between words that are outside of the current window of size \textit{n} and therefore cannot deal with unseen word pattern. For small values of \textit{n} this approach is computationally efficient. However, as \textit{n} grows, the number of potential n-grams follows an exponential growth. This effect is know as "curse of dimensionality" and can be mitigated using \acp{ANN}
+\cite{bengio,vzivzka2019text}
+
 \subsection{Neural NLP}
-Before the 1980s, most \ac{NLP} systems relied on complex hand-written rules. Up until the early 2000s, statistical models have been the dominant method for \ac{NLP}. The first notable breakthrough of neural \ac{NLP} happened in 2003, when Benio et al. \cite{bengio} outperformed the state-of-the-art statistical language models using an \ac{ANN}.
-Word2vec.
+Because \ac{ML} algorithms and \acp{ANN} cannot directly process letters, words, or sentences, the text has to be converted into numbers. This process called "tokenization" has several advantages. On the one hand, it leads to a compression of the size of the dataset. On the other hand, it is possible to encode the semantical meaning into the tokenized representation.
+The advantage of \ac{NLP} models using an \ac{ANN} is that they can learn the probability of word sequences in parallel with the syntactic and semantic relationships between words. This can be achieved by representing each word as a vector. If two vectors are similar, this indicates a relationship between the words represented by them. With this approach vectors of words sharing the same word-stem will be similar. Also, words appearing in similar contexts like \textit{go} and \textit{walk} will have high similarity measures.
+\cite{bengio,vzivzka2019text}
+
+A widely adopted method for obtaining a vector representation for words the "Word2vec" technique developed at Google by Mikolov et al. \cite{mikolov2013}. For this technique an \ac{ANN} is trained with a large text corpus. The "Word2vec" algorithm maps each word in the text corpus to a specific vector that can have several hundred dimensions.
+
+The resulting word vectors can then be used again as input for specialized \acp{ANN} for example for the purpose of machine translation and summarization.
+
 \subsection{Natural Language Understanding}
 \subsection{Large Language Models and Generative AI}
-\ac{GenAI} is part of \ac{AI}.
+A \ac{LLM} is a \ac{ML} model specifically designed for advanced \ac{NLP} tasks. Most \acp{LLM} are developed to generate text in natural language. Therefore, those \acp{LLM} are a specific type of \ac{GenAI}. What sets \acp{LLM} apart from other \ac{NLP} systems is their ability to learn different tasks simultaneously. For example, the \acp{LLM} developed by OpenAI known as \ac{GPT} are not limited to a specific \ac{NLP} tasks, but can summarize text, answer questions, and translate sentences.
+\cite{radford2019language}
+
+The functioning of the \ac{LLM} technology is mainly based on very large text corpora used as training data and on the "Transformer" architecture for deep \acp{ANN} introduced in \cref{Transformer}. On of the key differences using the Transformer architecture is the vector representation of words.  
+When a \ac{LLM} is trained on an extensive and diverse text corpus or several text corpora, it will be able to perform well in various domains and tasks.
+\cite{radford2019language,brown2020language}
+
+\acp{LLM} are of interest for Document Understanding, because their capabilities can be applied for \acf{IE} and especially \acf{NER} tasks. In general, \acp{LLM} are the most advanced approach to natural language understanding systems due to their ability to handle text input and generate adequate output.
+\cite{brown2020language,carbonell2021named}
 %Introduce generative models like generative adversarial networks (GANs) and variational autoencoders (VAEs).
 %Explore their applications in natural language processing (NLP) tasks, including text generation, summarization, and translation.
 \section{Artificial Intelligence for Document Understanding}
@@ -84,6 +107,7 @@ When a supervised model learns the training data too well, including the noise a
 \subsection{Long Short-Term Memory}
 \subsection{Convolutional Neural Network}
 \subsection{Transformer Architecture}
+\label{Transformer}
 Transformer Models are used for Generative Pre-trained Models (GPT)
 \subsection{Machine Learning based Document Understanding}
 %Discuss the potential benefits of generative AI for document understanding.
