@@ -108,6 +108,16 @@ In general, \acp{LLM} are the most advanced approach to natural language underst
 %Discuss the potential benefits of generative AI for document understanding.
 
 \subsection{Supervised Learning}
+Supervised learning is a paradigm for \ac{ML} systems, where a models \textit{learns} to produce the desired output for a collection of input data. The application of supervised learning is also often referred to as \textit{training} of a \ac{ML} model. The goal is that the trained system is able to produce reasonable results for unseen data.
+\cite{haykin2009neural,knudsen1994supervised}
+
+Preceding the actual supervised learning, there are often data pre-processing steps such as the manual creation of \textit{labels} indicating the desired output for a specific input. The availability of such labeled data is essential for successful supervised learning.
+\cite{haykin2009neural}
+
+The training process varies depending on the specific learning algorithm.
+Regression techniques like \textit{linear regression} are among the simplest examples of supervised learning. The \acp{ANN} introduced in the following section of can be regarded as more advanced applications of the supervised learning paradigm. 
+\Cref{pic:supervised} illustrates the supervised learning paradigm for \ac{ANN}. The network calculates the output for the given input. The output is compared to the target result. The error is translated into an instructive signal that adjusts the network. 
+\cite{haykin2009neural,knudsen1994supervised}
 
 \begin{figure}[ht]
     \centering 
@@ -120,21 +130,85 @@ When a supervised model learns the training data too well, including the noise a
 \cite{haykin2009neural,knudsen1994supervised}
 
 \subsection{Artificial Neural Networks}
+\subsection*{From biological to artificial neural networks}
 An \acf{ANN} aims to imitate biological neural networks like the human brain. The human brain consists of billions of cells called \textit{neurons}. Some neurons are connected with each other to form a network. Those connectors are called \textit{synapsis}. According to common theories, all memorized information is encoded in the network of neurons and synapses. Neurons communicate through an electro-chemical signaling system. To transmit information, a neuron releases a small discharge of electrical current to a part of the cell called \textit{axon}. When the axon is stimulated, it releases \textit{neurotransmitters}, which are signaling chemicals. 
 A neuron is believed to have two states. Either it is at \textit{rest} or it \textit{fires}, which means that neurotransmitters are released. 
-Neurotransmitters can have different effects on neurons. Some increase or decrease the probability that the receiving neuron will fire and others can potentiate the effect of other neurotransmitters. \\
-Because neurons only have two states, in an \ac{ANN} they can be modeled as switches. Whether the artificial neuron fires or not can be modeled as an \textit{activation function}. The synapses are modeled as mathematical matrices, called \textit{weights}.
+Neurotransmitters can have different effects on neurons. Some increase or decrease the probability that the receiving neuron will fire and others can potentiate the effect of other neurotransmitters.
+
+Because neurons only have two states, in an \ac{ANN} they can be modeled as switches. Whether the artificial neuron fires or remains at rest can be modeled by an \textit{activation function}. In case of the simple perceptron the activation function is a discrete step function that returns either 1 or 0. The synapses are modeled as mathematical matrices in an \ac{ANN} and called \textit{weights}.
 \cite{haykin2009neural,knudsen1994supervised}
 
-Inspired by the functioning of the human brain and the idea to encode information in neural networks has lead to the development of the "perceptron". The perceptron is a supervised learning algorithm for binary classification. In other words, the perceptron decides whether an input vector is part of a specific class or not. The name perceptron comes from the term perception, because the algorithm models the ability to perceive something. 
+\subsection*{Simple perceptron}
+\begin{figure}[ht]
+    \centering 
+    \includegraphics[width=0.6\textwidth]{pictures/perceptron.png}
+    \caption{Simple perceptron with three inputs and and one output node \cite{nielsen2015neural}}
+    \label{pic:perceptron}    % label the image for internal referencing
+\end{figure}
+Inspired by the functioning of the human brain, the idea to encode information in neural networks has lead to the development of the "perceptron". The perceptron is a supervised learning algorithm for binary classification. In other words, the perceptron decides whether an input vector is part of a specific class or not. The name perceptron comes from the term perception, because the algorithm models the ability to perceive something. 
 
-The first computational perceptron has been implemented by Frank Rosenblatt in 1957 \cite{Rosenblatt_1957}.  It consists of one layer of input neurons and one layer of output neurons connected by a layer of weights. Because of this, it is also called \textit{single-layer} perceptron opposed to the more powerful \textit{multi-layer} perceptrons that have additional \textit{hidden} layers.
+The first computational perceptron has been implemented by Frank Rosenblatt in 1957 \cite{Rosenblatt_1957}.  It consists of one layer of input neurons and one layer of output neurons connected by a layer of weights. Because of this, it is also called \textit{single-layer} perceptron opposed to the more powerful \textit{multi-layer} perceptrons that have additional \textit{hidden} layers. \Cref{pic:perceptron} shows a schematic representation of a simple perceptron.
 
-This single-layer perceptron can only solve problems of \textit{linear} nature. For example, it is able to simulate the behavior of the binary \textit{and} operator and \textit{or} operator. However, it is only possible to simulate the behavior of the \textit{xor} operator with a multi-layer perceptron and not with a single-layer perceptron. Nevertheless, it demonstrates that it is in principle possible to create \ac{ANN}.
+A perceptron can be trained using the supervised learning paradigm. The learning rule of the simple perceptron follows the following steps:
 
+\begin{enumerate}
+    \item The weight matrices are initialized to random values.
+    \item The input vectors are presented at the input layer.
+    \item The network output is calculated.
+    \item At each node of the output layer the error is calculated by comparing the network output with the expected result.
+    \item The weights are updated with the value of the error.
+\end{enumerate}
+
+The steps from 2. are repeated until the overall error is below a defined threshold. It can be noticed the the values of the weights converge to a constant state.
+\cite{haykin2009neural,Rosenblatt_1957}
+
+This single-layer perceptron can only solve problems of \textit{linear} nature. For example, it is able to model the behavior of the binary \textit{and} operator and \textit{or} operator. However, it is only possible to simulate the behavior of the \textit{xor} operator with a multi-layer perceptron and not with a single-layer perceptron. Nevertheless, it demonstrates that it is in principle possible to create an \ac{ANN}.
 \cite{haykin2009neural}
 
-\subsection{Long Short-Term Memory}
+\subsection*{Multi-layer Perceptron and Backpropagation}
+\begin{figure}[ht]
+    \centering 
+    \includegraphics[width=0.7\textwidth]{pictures/mlp.png}
+    \caption{Multi-layer perceptron with two hidden layers \cite{nielsen2015neural}}
+    \label{pic:mlp}    % label the image for internal referencing
+\end{figure}
+Due to the limitations of the simple perceptron, the multi-layer perceptron has been developed. The multi-layer percepton consists of one or more additional \textit{hidden} layers. The weights connect the input and output nodes with the nodes of the hidden layer. This architecture is illustrated in \cref{pic:mlp}.
+
+Because of the additional hidden layers, it is not as straightforward anymore to decide which weights to update. The common way is to use \textit{backpropagation} to update the weights. The backpropagation algorithm calculates the \textit{gradient}, which is a vector that indicates how much each weight should be changed to minimize the average error for the current training set or a subset of it called \textit{batch}.
+\cite{nielsen2015neural,hochreiter2001gradient}
+
+The backpropagation algorithm requires the activation function to be differentiable and therefore continuous. Most multi-layer perceptrons use a sigmoid function, because it is the closest continuous resemblance of a discrete step function.
+\cite{haykin2009neural,nielsen2015neural}
+
+Just like the simple perceptron the multi-layer perceptron is trained using the supervised learning paradigm. However, the general learning rule of the multi-layer perceptron consists of more steps including backpropagation:
+
+\begin{enumerate}
+    \item The weight matrices are initialized to random values.
+    \item The input vectors are presented at the input layer.
+    \item The network output is calculated.
+    \item Propagate the error backwards through the network.
+    \item Repeat the steps from 2. for all data of the current training set or batch.
+    \item Calculate the average error and update the weights according to the gradient.
+    \item Randomly shuffle the training set and create new batches to prevent that the order of the training data influences the network.
+    \item Repeat the steps from 2. until the gradient crosses the defined threshold.
+    \cite{nielsen2015neural}
+    
+\end{enumerate}
+
+The multi-layer perceptron is considered as the foundation for deep learning techniques. The specialized \acp{ANN} introduced in the following sections are all based on the architecture of the multi-layer perceptron.
+\cite{nielsen2015neural}
+
+\subsection{Recurrent Neural Networks and Long Short-Term Memory}
+
+\acp{RNN} have been developed for the purpose of handling of \textit{time-series} data like text. This means that the order of the words and sentences plays an important role for the meaning of a text. 
+The main idea is that the output of a hidden network layer at time \textit{t} is stored in a "short-term memory" and will be used as additional input at time \textit{t+1}. Like this, the model can remember the previously predicted result providing more context and use it to predict the next one. \cite{hochreiter1997long,gers2000learning}
+
+However, classical \acp{RNN} are affected by the so-called "vanishing gradient problem", where the gradient used to update the weights gets weaker and weaker with every iteration until it is essentially zero. Vice versa, it is also possible that the gradient grows exponentially instead of converging to zero. This makes it difficult to train an \ac{RNN} using backpropagation. This effect prevents the network to learn rather subtle patterns in the data. \cite{hochreiter2001gradient}
+
+To deal with the issue of the "vanishing gradient problem" in classical \acp{RNN} the idea of the \ac{LSTM} has been introduced by Hochreiter and Schmidhuber of the Technical University Munich \cite{hochreiter1997long}. 
+
+\ac{LSTM} is a type of \ac{RNN} that can distinguish between relevant and less relevant information. To achieve this, an \ac{LSTM} contains several \textit{forget gates} within the hidden layers at which it is determined which inputs should be placed in memory and what should be \textit{forgotten}. The \ac{LSTM} architecture is illustrated in \cref{pic:LSTM}.
+
 \begin{figure}[ht]
     \centering 
     \includegraphics[width=0.7\textwidth]{pictures/LSTM.png}
@@ -142,7 +216,9 @@ This single-layer perceptron can only solve problems of \textit{linear} nature. 
     \label{pic:LSTM}    % label the image for internal referencing
 \end{figure}
 
+An LSTM-based ML model can learn that certain expressions are statistically more likely to follow a given expression than others. For example, in the context of \ac{NLP}, grammatical patterns can be detected and learned that way.
 \cite{hochreiter1997long,hochreiter2001gradient}
+
 \subsection{Convolutional Neural Network}
 \subsection{Transformer Architecture}
 \label{Transformer}
