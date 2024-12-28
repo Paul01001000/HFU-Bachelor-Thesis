@@ -14,17 +14,17 @@ To analyze the results of the out-of-the-box model, the performances on the diff
         \toprule    % separator line
         Field  & Accuracy  & Null rate & Cleaned Accuracy \\
         \midrule    % separator line
-        Vendor           & 81.875 \%   &  6.25 \%   & 87.33 \% \\
-        Invoice Number   & 70.625 \%   & 26.25 \%  & 95.76 \%\\
-        Amount           & 86.250 \%   & 11.25 \%  & 97.18 \% \\
-        Invoice Date     & 86.875 \%   & 10.6  \%  & 97.20 \% \\
+        Vendor           & 81.875\%   &  6.25\%   & 87.33\% \\
+        Invoice Number   & 70.625\%   & 26.25\%  & 95.76\%\\
+        Amount           & 86.250\%   & 11.25\%  & 97.18\% \\
+        Invoice Date     & 86.875\%   & 10.6 \%  & 97.20\% \\
         \bottomrule % separator line
     \end{tabular}
     \caption{Comparison of Extracted Field}
     \label{table:Field_Com}
 \end{table}
 
-The fields where the model reaches the highest accuracy are \textit{Amount} and \textit{Invoice Date} with 86.250 \% and 86.875 \% respectively. The same two fields have the highest \textit{Cleaned Accuracy} with over 97 \%. The \textit{Invoice Number} field has the lowest accuracy with 70.625 \% and the highest \textit{Null rate} with 26.25 \%. The high \textit{Null rate} is the main factor for the relatively low overall accuracy. Looking at the \textit{Cleaned Accuracy} the model extracted the correct \textit{Invoice Number} 95.76 \% of the time whenever it returned a non-null output. Having the lowest \textit{Null rate} of 6.25 \% on the vendor field, the model's accuracy of 81.875 \% is close to the \textit{Cleaned Accuracy} of 87.33 \%, which is the lowest among all fields. 
+The fields where the model reaches the highest accuracy are \textit{Amount} and \textit{Invoice Date} with 86.250\% and 86.875\% respectively. The same two fields have the highest \textit{Cleaned Accuracy} with over 97\%. The \textit{Invoice Number} field has the lowest accuracy with 70.625\% and the highest \textit{Null rate} with 26.25\%. The high \textit{Null rate} is the main factor for the relatively low overall accuracy. Looking at the \textit{Cleaned Accuracy} the model extracted the correct \textit{Invoice Number} 95.76\% of the time whenever it returned a non-null output. Having the lowest \textit{Null rate} of 6.25\% on the vendor field, the model's accuracy of 81.875\% is close to the \textit{Cleaned Accuracy} of 87.33\%, which is the lowest among all fields. 
 
 It can be noticed that the results for \textit{Amount} and \textit{Invoice Date} lie within one percentage point across all categories. A potential explanation for this similarity is that both field have a recognizable data format and are typically found in a constant area of most invoices. In particular, the \textit{Invoice Date} is often written in the upper right are of an invoice, while the \textit{Amount} is usually displayed on the right hand side of the listing of the line items.
 
@@ -43,9 +43,9 @@ In turn, \textit{Vendor} and \textit{Invoice Number} occur in a less predictable
     \label{pic:results_1_cum}    % label the image for internal referencing
 \end{figure}
 
-To evaluate the usefulness of the model in a real-world context, the \textit{Document Score} indicates how many target variables have been correctly identified. \Cref{pic:results_1} shows the histogram of the occurrences of the document scores between one and four. It can be noted that the model always identified at least one variable correctly. Also, 74 times all four field have been correctly identified, which is 46.25 \% of the time. This means that less than one out of two times the model will produce a perfectly accurate result. Only five times just one field has been correctly extracted.
+To evaluate the usefulness of the model in a real-world context, the \textit{Document Score} indicates how many target variables have been correctly identified. \Cref{pic:results_1} shows the histogram of the occurrences of the document scores between one and four. It can be noted that the model always identified at least one variable correctly. Also, 74 times all four field have been correctly identified, which is 46.25\% of the time. This means that less than one out of two times the model will produce a perfectly accurate result. Only five times just one field has been correctly extracted.
 
-The plain distribution only shows the frequency of the individual scores and ignores that if the model identifies three fields correctly it also identified at least two fields correctly. Because of this, the reverse cumulate distribution shown in \cref{pic:results_1_cum} is used to indicate how many documents received a document score of at least the given score. 132 times and 82.5 \% of the time at least three fields have been correctly identified. Although in \cref{pic:results_1} the most frequent document score is four, in \cref{pic:results_1_cum} a clear drop from category three to four can be observed. This means that the 52 input documents for which the model identified three variables correctly are missing in the category where all four fields have to be correctly identified.
+The plain distribution only shows the frequency of the individual scores and ignores that if the model identifies three fields correctly it also identified at least two fields correctly. Because of this, the reverse cumulate distribution shown in \cref{pic:results_1_cum} is used to indicate how many documents received a document score of at least the given score. 132 times and 82.5\% of the time at least three fields have been correctly identified. Although in \cref{pic:results_1} the most frequent document score is four, in \cref{pic:results_1_cum} a clear drop from category three to four can be observed. This means that the 52 input documents for which the model identified three variables correctly are missing in the category where all four fields have to be correctly identified.
 
 Another factor investigated for potentially having an effect on the model's performance is the nature of the input document. In particular, whether it is a digitally created PDF document of the scan of a printed document. The scanned documents have to be processed with \ac{OCR} before the data extraction. This adds an additional process step that may be the cause for errors. Because of this, it is suspected that the model will have a lower accuracy on those documents. The comparison between the model's performance on digitally created PDF and scanned invoice documents is shown in \cref{table:Field_Com_Scan_PDF}.
 
@@ -56,17 +56,17 @@ Another factor investigated for potentially having an effect on the model's perf
         \toprule    % separator line
         Field  & Accuracy  & Null rate & Cleaned Accuracy \\
         \midrule    % separator line
-        Vendor on PDF    & 92.50 \%   &  5.00 \%   & 97.37 \% \\
-        Vendor on Scan   & 71.25 \%   &  7.50 \%   & 77.03 \% \\
+        Vendor on PDF    & 92.50\%   &  5.00\%   & 97.37\% \\
+        Vendor on Scan   & 71.25\%   &  7.50\%   & 77.03\% \\
         \midrule    % separator line
-        Invoice Number on PDF & 86.25 \%   & 10.0 \%  & 95.83 \%\\
-        Invoice Number on Scan & 55.00 \%  & 42.50 \%  & 95.65 \%\\
+        Invoice Number on PDF & 86.25\%   & 10.0\%  & 95.83\%\\
+        Invoice Number on Scan & 55.00\%  & 42.50\%  & 95.65\%\\
         \midrule    % separator line
-        Amount on PDF      & 83.75 \%   & 13.75 \%  & 97.10 \% \\
-        Amount on Scan     & 88.75 \%   & 8.75 \%  & 97.26 \% \\
+        Amount on PDF      & 83.75\%   & 13.75\%  & 97.10\% \\
+        Amount on Scan     & 88.75\%   & 8.75\%  & 97.26\% \\
         \midrule    % separator line
-        Invoice Date on PDF  & 85.00 \%   & 11.25  \%  & 95.77 \% \\
-        Invoice Date on Scan & 88.75 \%   & 10.00  \%  & 98.61 \% \\
+        Invoice Date on PDF  & 85.00\%   & 11.25 \%  & 95.77\% \\
+        Invoice Date on Scan & 88.75\%   & 10.00 \%  & 98.61\% \\
         
         \bottomrule % separator line
     \end{tabular}
@@ -74,14 +74,14 @@ Another factor investigated for potentially having an effect on the model's perf
     \label{table:Field_Com_Scan_PDF}
 \end{table}
 
-When comparing the models' performance between PDF and scanned invoices, for the \textit{Vendor} and \textit{Invoice Number} fields lower accuracies for scanned documents can be observed. For the \textit{Vendor} field the models' accuracy on PDF is 92.5 \% and the \textit{Cleaned Accuracy} 97.37 \%. On scanned documents these values drop to 71.25 \% and 77.03 \%. The accuracy and the \textit{Cleaned Accuracy} on the \textit{Vendor} field for scanned documents are more than 20 percentage points lower compared to the results of PDF documents, while the \textit{Null rates} are close with 5 \% for PDF and 7.5 \% for scanned documents. On the \textit{Invoice Number} field the two accuracy scores are more than 30 percentage points apart with 86.25 \% for PDF and 55.0 \% for scan. At the same, the \textit{Cleaned Accuracy} for both document types are almost equal with 95.83 \% and 95.65 \%. This can be explained by looking at the \textit{Null rate}, which is 10.0 \% for PDF and 42.5 \% for scanned invoices. The finding for the \textit{Vendor} and \textit{Invoice Number} fields support the hypothesis that the models' accuracy is lower on documents that are processed by \ac{OCR}.
+When comparing the models' performance between PDF and scanned invoices, for the \textit{Vendor} and \textit{Invoice Number} fields lower accuracies for scanned documents can be observed. For the \textit{Vendor} field the models' accuracy on PDF is 92.5\% and the \textit{Cleaned Accuracy} 97.37\%. On scanned documents these values drop to 71.25\% and 77.03\%. The accuracy and the \textit{Cleaned Accuracy} on the \textit{Vendor} field for scanned documents are more than 20 percentage points lower compared to the results of PDF documents, while the \textit{Null rates} are close with 5\% for PDF and 7.5\% for scanned documents. On the \textit{Invoice Number} field the two accuracy scores are more than 30 percentage points apart with 86.25\% for PDF and 55.0\% for scan. At the same, the \textit{Cleaned Accuracy} for both document types are almost equal with 95.83\% and 95.65\%. This can be explained by looking at the \textit{Null rate}, which is 10.0\% for PDF and 42.5\% for scanned invoices. The finding for the \textit{Vendor} and \textit{Invoice Number} fields support the hypothesis that the models' accuracy is lower on documents that are processed by \ac{OCR}.
 
-However, on the \textit{Amount} and \textit{Invoice Date} field the opposite can be observed. For both fields, the models' accuracy is higher on the scanned documents  with 83.75 \% and 88.75 \% for \textit{Amount} and 85.0 \% and again 88.75 \% for the \textit{Invoice date} field. Although the PDF and scan accuracy are in a range of 5 percentage points, this finding contradicts the initial hypothesis. For the \textit{Amount} field the \textit{Null rate} of 13.75 \% for PDF documents is exactly 5 percentage points higher than for scanned documents, while the \textit{Cleaned Accuracy} scores are almost identical with 97.1 \% and 97.26 \%. The results on the \textit{Invoice Date} field look similar with \textit{Null rate} of 11.25 \% and 10.0 \% as well as \textit{Cleaned Accuracies} of 95.77 \% and 98.61 \%.
+However, on the \textit{Amount} and \textit{Invoice Date} field the opposite can be observed. For both fields, the models' accuracy is higher on the scanned documents  with 83.75\% and 88.75\% for \textit{Amount} and 85.0\% and again 88.75\% for the \textit{Invoice date} field. Although the PDF and scan accuracy are in a range of 5 percentage points, this finding contradicts the initial hypothesis. For the \textit{Amount} field the \textit{Null rate} of 13.75\% for PDF documents is exactly 5 percentage points higher than for scanned documents, while the \textit{Cleaned Accuracy} scores are almost identical with 97.1\% and 97.26\%. The results on the \textit{Invoice Date} field look similar with \textit{Null rate} of 11.25\% and 10.0\% as well as \textit{Cleaned Accuracies} of 95.77\% and 98.61\%.
 
 Based on those results, the hypothesis that the models' accuracy is lower on scanned invoice documents, because of the \ac{OCR} process cannot be proven as correct. The findings on the \textit{Amount} and \textit{Invoice Date} even seem to contradict this hypothesis. However, it has to be noted that the values are very close for all metrics.
 
-Looking at the histogram shown in \cref{pic:scan_pdf_1} and the reverse cumulative histogram in \cref{pic:scan_pdf_1_cum} of the document scores for scanned and PDF invoice documents, 46 PDF documents and 28 scanned documents can be observed in the category with a perfect document score of four. This means that for 57.5 \% of PDF documents the model produced a perfect result. On the other hand, the modes identified all fields correctly on 35.0 \% of scanned documents. 
-Moreover, while for 72 PDF documents (90 \%) the model scored a document score of at least three, the number of scanned documents in same category is lower with 60 (75 \%)
+Looking at the histogram shown in \cref{pic:scan_pdf_1} and the reverse cumulative histogram in \cref{pic:scan_pdf_1_cum} of the document scores for scanned and PDF invoice documents, 46 PDF documents and 28 scanned documents can be observed in the category with a perfect document score of four. This means that for 57.5\% of PDF documents the model produced a perfect result. On the other hand, the modes identified all fields correctly on 35.0\% of scanned documents. 
+Moreover, while for 72 PDF documents (90\%) the model scored a document score of at least three, the number of scanned documents in same category is lower with 60 (75\%)
 Therefore, a drop from category 3 to 4 can be observed.
 Furthermore, it can be noted that for all PDF documents the model identified at least two fields correctly, while 5 times the model was only able to identify one correct field. 
 
@@ -98,7 +98,7 @@ Furthermore, it can be noted that for all PDF documents the model identified at 
     \label{pic:scan_pdf_1_cum}    % label the image for internal referencing
 \end{figure}
 
-Based on the \textit{Accuracy, Null rate} and \textit{Cleaned Accuracy} not for all fields a performance drop of the model when dealing with scanned document could be observed. However, when determine the overall usefulness of the distribution of the documents scored clearly indicates a better performance of the model with PDF documents. This effect is especially clear for the category where four out of four fields are identified correctly. It has to be noted, that the results are only useful when the values of all fields are extracted correctly, because even one single error will result in a booking mistake.
+Based on the \textit{Accuracy, Null rate} and \textit{Cleaned Accuracy} not for all fields a performance drop of the model when dealing with scanned document could be observed. However, when determining the overall usefulness, the distribution of the documents scores clearly indicates a better performance of the model with PDF documents. This effect is especially clear for the category where four out of four fields are identified correctly. It has to be noted, that the results are only useful when the values of all fields are extracted correctly, because even one single error will result in a booking mistake.
 
 \newpage
 \section{Custom Model Performance}
@@ -106,6 +106,7 @@ To evaluate the performance of the custom model, its results on the test data se
 
 The custom model is built on the default invoice data extraction model of UiPath that is used as the benchmark. Because the custom model has been trained on additional training data, it is expected to produce more accurate results than the benchmark results.
 
+\subsection*{Vendor}
 \begin{table}[ht]   % table position
     \centering
     \footnotesize
@@ -113,14 +114,14 @@ The custom model is built on the default invoice data extraction model of UiPath
         \toprule    % separator line
         Vendor  & Accuracy  & Null rate & Cleaned Accuracy \\
         \midrule    % separator line
-        Custom Model               & 74.00 \%   & 8.00 \%   & 82.61 \% \\
-        Benchmark           & 76.00 \%   & 12.00 \%  & 86.36 \%\\
+        Custom Model               & 74.00\%   & 8.00\%   & 82.61\% \\
+        Benchmark           & 76.00\%   & 12.00\%  & 86.36\%\\
         \midrule    % separator line
-        Custom Model on PDF        & 75.00 \%   & 12.50 \%  & 90.48 \% \\
-        Benchmark on PDF    & 87.50 \%   & 12.50 \%  & 100.00 \% \\
+        Custom Model on PDF        & 75.00\%   & 12.50\%  & 90.48\% \\
+        Benchmark on PDF    & 87.50\%   & 12.50\%  & 100.00\% \\
         \midrule    % separator line
-        Custom Model on Scan       & 73.08 \%  & 3.85 \%   & 76.00 \% \\
-        Benchmark on Scan   & 65.38 \%  & 11.54 \%  & 73.91 \% \\
+        Custom Model on Scan       & 73.08\%  & 3.85\%   & 76.00\% \\
+        Benchmark on Scan   & 65.38\%  & 11.54\%  & 73.91\% \\
 
         \bottomrule % separator line
     \end{tabular}
@@ -129,7 +130,15 @@ The custom model is built on the default invoice data extraction model of UiPath
 \end{table}
 
 In \cref{table:Model_Bench_Vendor} the results for the \textit{Vendor} field of the custom model and the benchmark are compared. 
+Looking at the overall accuracy, the custom model result is lower by two percentage points than the benchmark with an accuracy of 76.0\%. 
+With PDF documents, the accuracy gap is larger with 75.0\% for the custom model and 87.5\% as benchmark. 
+On scanned invoices the custom model has a higher accuracy with 73.08\% compared to 65.38\%. 
+Also the custom model has a remarkably low null rate of 3.85\% on scanned documents, compared to 11.54\% of the benchmark.
+Furthermore, it stands out that the benchmark has a cleaned accuracy value of 100\% with PDF documents where the custom models drops to 90.48\%.
+For the vendor field it can be noticed that performance of the custorm model is below the benchmark, because of a much lower accuracy with PDF documents.
+Nevertheless, it can also be noted that the accuracy with scanned documents improved compared to the benchmark.
 
+\subsection*{Invoice Number}
 \begin{table}[ht]   % table position
     \centering
     \footnotesize
@@ -137,20 +146,31 @@ In \cref{table:Model_Bench_Vendor} the results for the \textit{Vendor} field of 
         \toprule    % separator line
         Invoice Number  & Accuracy  & Null rate & Cleaned Accuracy \\
         \midrule    % separator line
-        Custom Model               & 88.00 \%   & 6.00 \%   & 93.62 \% \\
-        Benchmark           & 78.00 \%   & 22.00 \%  & 100.00 \%\\
+        Custom Model               & 88.00\%   & 6.00\%   & 93.62\% \\
+        Benchmark           & 78.00\%   & 22.00\%  & 100.00\%\\
         \midrule    % separator line
-        Custom Model on PDF        & 95.83 \%   & 4.17 \%  & 100.00 \% \\
-        Benchmark on PDF    & 87.50 \%   & 12.50 \%  & 100.00 \% \\
+        Custom Model on PDF        & 95.83\%   & 4.17\%  & 100.00\% \\
+        Benchmark on PDF    & 87.50\%   & 12.50\%  & 100.00\% \\
         \midrule    % separator line
-        Custom Model on Scan       & 80.77 \%  & 7.69 \%   & 87.50 \% \\
-        Benchmark on Scan   & 69.23 \%  & 30.77 \%  & 100.00 \% \\
+        Custom Model on Scan       & 80.77\%  & 7.69\%   & 87.50\% \\
+        Benchmark on Scan   & 69.23\%  & 30.77\%  & 100.00\% \\
 
         \bottomrule % separator line
     \end{tabular}
     \caption{Results on Invoice Number Field}
     \label{table:Model_Bench_Number}
 \end{table}
+
+The invoice number field has been the field with the lowest accuracy for the out-of-the-box model. 
+\Cref{table:Model_Bench_Number} compares the results of the custom model to the benchmark, which is based on the out-of-the-box model performance.
+It can be clearly observed that the custom model has a higher accuracy that the benchmark overall and individually for PDF and scanned invoices. 
+Even thought the benchmark has a cleaned accuracy score of 100\% across all three categories, high null rates of 22\% overall, 12.5\% on PDF and 30.77\% result a lower accuracy.
+Overall the custom model the custom model has an accuracy of 88\%, a null rate of 6\% and a cleaned accuracy of 93.62\%. 
+On PDF documents the custom model has a perfect cleaned accuracy and a null rate of 4.17\% leading to an accuracy score of 95.83\%.
+Again a performance drop from PDF to scan can be observed. The custom model has an accuracy of 80.77\% for scanned documents with a null rate of 7.69\% and a cleaned accuracy of 87.5\%.
+For the invoice number field a significant improvement through the additional training examples can be noticed.
+
+\subsection*{Amount}
 \begin{table}[ht]   % table position
     \centering
     \footnotesize
@@ -158,20 +178,28 @@ In \cref{table:Model_Bench_Vendor} the results for the \textit{Vendor} field of 
         \toprule    % separator line
         Amount  & Accuracy  & Null rate & Cleaned Accuracy \\
         \midrule    % separator line
-        Custom Model               & 88.00 \%   & 6.00 \%   & 93.62 \% \\
-        Benchmark           & 90.00 \%   & 8.00 \%  & 97.83 \%\\
+        Custom Model               & 88.00\%   & 6.00\%   & 93.62\% \\
+        Benchmark           & 90.00\%   & 8.00\%  & 97.83\%\\
         \midrule    % separator line
-        Custom Model on PDF        & 83.33 \%   & 8.33 \%  & 90.91 \% \\
-        Benchmark on PDF    & 87.50 \%   & 12.50 \%  & 100.00 \% \\
+        Custom Model on PDF        & 83.33\%   & 8.33\%  & 90.91\% \\
+        Benchmark on PDF    & 87.50\%   & 12.50\%  & 100.00\% \\
         \midrule    % separator line
-        Custom Model on Scan       & 92.31 \%  & 3.85 \%   & 96.00 \% \\
-        Benchmark on Scan   & 92.31 \%  & 3.85 \%  & 96.00 \% \\
+        Custom Model on Scan       & 92.31\%  & 3.85\%   & 96.00\% \\
+        Benchmark on Scan   & 92.31\%  & 3.85\%  & 96.00\% \\
 
         \bottomrule % separator line
     \end{tabular}
     \caption{Results on Amount Field}
     \label{table:Model_Bench_Amount}
 \end{table}
+
+In \cref{table:Model_Bench_Amount} no big margins between the the results of the custom model and the benchmark exist.
+The benchmark accuracy is slightly higher overall with 90\% to 88\% and for PDF with 87.5\% and 83.33\%. 
+The custom model has a lower null rate and therefore a lower cleaned accuracy than the benchmark.
+On scanned document the custom model and the benchmark have the identical results.
+Because the the out-of-the-box model already scored a high accuracy for the amount field, no improvement through the additional training can be observed.
+
+\subsection*{Invoice Date}
 \begin{table}[ht]   % table position
     \centering
     \footnotesize
@@ -179,20 +207,22 @@ In \cref{table:Model_Bench_Vendor} the results for the \textit{Vendor} field of 
         \toprule    % separator line
         Invoice Date  & Accuracy  & Null rate & Cleaned Accuracy \\
         \midrule    % separator line
-        Custom Model               & 90.00 \%   & 8.00 \%   & 97.83 \% \\
-        Benchmark           & 84.00 \%   & 12.00 \%  & 95.45 \%\\
+        Custom Model               & 90.00\%   & 8.00\%   & 97.83\% \\
+        Benchmark           & 84.00\%   & 12.00\%  & 95.45\%\\
         \midrule    % separator line
-        Custom Model on PDF        & 87.50 \%   & 8.33 \%  & 95.45 \% \\
-        Benchmark on PDF    & 83.33 \%   & 12.50 \%  & 95.24 \% \\
+        Custom Model on PDF        & 87.50\%   & 8.33\%  & 95.45\% \\
+        Benchmark on PDF    & 83.33\%   & 12.50\%  & 95.24\% \\
         \midrule    % separator line
-        Custom Model on Scan       & 92.31 \%  & 7.69 \%   & 100.00 \% \\
-        Benchmark on Scan   & 84.62 \%  & 11.54 \%  & 95.65 \% \\
+        Custom Model on Scan       & 92.31\%  & 7.69\%   & 100.00\% \\
+        Benchmark on Scan   & 84.62\%  & 11.54\%  & 95.65\% \\
 
         \bottomrule % separator line
     \end{tabular}
     \caption{Results on Date Field}
     \label{table:Model_Bench_Date}
 \end{table}
+
+Of all fields, the invoice date has been the field with the highest accuracy of the out-of-the-box model.
 
 \newpage
 \section{Interpretation of Key Findings}

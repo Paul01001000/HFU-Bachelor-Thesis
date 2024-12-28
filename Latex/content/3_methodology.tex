@@ -101,6 +101,8 @@ The custom model is based on the pre-trained default model and not built from sc
 %Describe the evaluation metrics used to assess the model's performance 
 %Discuss the experimental setup and cross-validation techniques employed.
 
+The model training follows the supervised learning paradigm introduced in \cref{supervised}.
+
 Before training the model, the available data has to be split into a train and a test set. Using the \textit{train\_test\_split} method of the \textit{sklearn} library in Python, 55 scanned files and 55 digital PDF files are selected as training data at random. The remaining 50 files will be used for testing the custom model.
 
 To start the training process, the 110 files are uploaded to a new \textit{UiPath Document Understanding Project}. When creating a new project, a base model can be selected. In this case, the default invoice extraction model is selected as the base model. As next step, the data extraction fields are defined. For this project only the four fields \textit{Vendor Name, Invoice Number, Document Date} and \textit{Total Amount} are selected.
@@ -110,7 +112,7 @@ All uploaded files have to be annotated with the expected values before training
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.9\linewidth]{pictures/annotate.png}
+    \includegraphics[width=0.7\linewidth]{pictures/annotate.png}
     \caption{Document Annotation in UiPath Document Understanding}
     \label{fig:annotate}
 \end{figure}
