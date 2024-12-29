@@ -143,7 +143,7 @@ Because neurons only have two states, in an \ac{ANN} they can be modeled as swit
 \subsection*{Simple perceptron}
 \begin{figure}[ht]
     \centering 
-    \includegraphics[width=0.6\textwidth]{pictures/perceptron.png}
+    \includegraphics[width=0.5\textwidth]{pictures/perceptron.png}
     \caption{Simple perceptron with three inputs and and one output node \cite{nielsen2015neural}}
     \label{pic:perceptron}    % label the image for internal referencing
 \end{figure}
@@ -197,12 +197,41 @@ Just like the simple perceptron the multi-layer perceptron is trained using the 
     
 \end{enumerate}
 
-The multi-layer perceptron is considered as the foundation for deep learning techniques. The specialized \acp{ANN} introduced in the following sections are all based on the architecture of the multi-layer perceptron.
+The multi-layer perceptron is the basic concept for any so-called \textit{feedforward} neural network, characterized by a forward information flow from the input to the output layer. This is considered to be the foundation for deep learning techniques. The specialized \acp{ANN} introduced in the following sections are all based on the architecture of the multi-layer perceptron.
 \cite{nielsen2015neural}
+
+\subsection{Convolutional Neural Network}
+The \ac{CNN} is an advanced version of the multi-layer perceptron that is specialized for image processing. Because classical \acp{ANN} require the input to be in form of a vector, it is not directly possible to pass an image as input. On the other hand, \acp{CNN} are designed to handle 2D matrices (e.g. grayscale images) or 3D matrices (e.g. color images).
+\cite{Goodfellow-et-al-2016}
+
+The basic concept for \acp{CNN} has been introduced by the Japanese researcher Fukushima Kunihiko in 1980 under the name \textit{neocognitron} \cite{fukushima1980neocognitron}.
+Just like the perceptron the \ac{CNN} is inspired by biological processes. In particular, by the neuron connectivity in the \textit{visual cortex}, the area in the brain responsible for visual information. 
+
+The architecture of a \ac{CNN} consists of several layers with different purposes:
+\begin{itemize}
+    \item The \textit{Input Layer} holds the input data as a matrix (e.g. the pixel values of an image)
+    \item The \textit{Convolutional Layer} performs the mathematical operation of a \textit{convolution} between the weights and small region of the input. A convolution has a similar effect like the application of a filter. This is done to highlight or flatten certain features of the input.
+    \item The \textit{Activation Layer} applies the activation function elementwise.
+    \item The \textit{Pooling Layer} performs a \textit{subsampling} operation along the height and width of the input. This results in a loss of information and is used to identify important features.
+    \item The \textit{Fully-Connected Layer} computes the final results.
+\end{itemize}
+\begin{figure}[ht]
+    \centering 
+    \includegraphics[width=0.9\textwidth]{pictures/CNN.png}
+    \caption{Architecture of a CNN for OCR \cite{lecun1998gradient}}
+    \label{pic:CNN}    % label the image for internal referencing
+\end{figure}
+
+A \ac{CNN} typically consist of multiple arrangements of convolutional, activation, and pooling layers between the input and fully-connected layers. The effects of convolutions and subsampling are illustrated in \cref{pic:CNN}. A \ac{CNN} is trained using backpropagation. The update of the weights not only influences the flow of information, but also influences the \textit{filters} applied in the convolutional layer.
+\cite{fukushima1980neocognitron,lecun1998gradient,Goodfellow-et-al-2016}
+
+The primary application area for \acp{CNN} is image processing. In the context of Document Understanding this is especially interesting for \ac{OCR}.
+In addition, \acp{CNN} can be useful for \ac{NLP} as well. For example, with them spatial relationships between words in a text can be captured. For Document Understanding, a \ac{CNN} can detect a relationship between the layout and the content of a document class.
+\cite{lecun1998gradient,leiAI}
 
 \subsection{Recurrent Neural Networks and Long Short-Term Memory}
 
-\acp{RNN} have been developed for the purpose of handling of \textit{time-series} data like text. This means that the order of the words and sentences plays an important role for the meaning of a text. 
+\acp{RNN} have been developed for the purpose of handling \textit{time-series} data especially text. In the context of \ac{NLP} time-series data means that the order of the words and sentences plays an important role for the meaning of a text. 
 The main idea is that the output of a hidden network layer at time \textit{t} is stored in a "short-term memory" and will be used as additional input at time \textit{t+1}. Like this, the model can remember the previously predicted result providing more context and use it to predict the next one. \cite{hochreiter1997long,gers2000learning}
 
 However, classical \acp{RNN} are affected by the so-called "vanishing gradient problem", where the gradient used to update the weights gets weaker and weaker with every iteration until it is essentially zero. Vice versa, it is also possible that the gradient grows exponentially instead of converging to zero. This makes it difficult to train an \ac{RNN} using backpropagation. This effect prevents the network to learn rather subtle patterns in the data. \cite{hochreiter2001gradient}
@@ -221,15 +250,15 @@ To deal with the issue of the "vanishing gradient problem" in classical \acp{RNN
 An LSTM-based ML model can learn that certain expressions are statistically more likely to follow a given expression than others. For example, in the context of \ac{NLP}, grammatical patterns can be detected and learned that way.
 \cite{hochreiter1997long,hochreiter2001gradient}
 
-\subsection{Convolutional Neural Network}
 \subsection{Transformer Architecture}
 \label{Transformer}
-Transformer Models are used for Generative Pre-trained Models (GPT)
+Transformer Models are used for \ac{GPT} which are the technology powering ChatGPT \cite{brown2020language}.
 \cite{vaswaniattentionneed}
 
 \section{Process Automation with Document Understanding}
 \subsection{Automated Invoice Processing}
 Document Understanding can be combined with \ac{RPA} tools.
+\cite{leiAI}
 \subsection{When not to use Document Understanding}
 When discussing the benefits of Document Understanding for \ac{RPA} also alternative approaches have to be considered. Document Understanding is 
 

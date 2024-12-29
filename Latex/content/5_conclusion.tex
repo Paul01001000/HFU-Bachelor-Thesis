@@ -1,3 +1,49 @@
+\chapter{Discussion}
+
+In this section, the experimental results are analyzed, interpreted, and synthesized with the theoretical foundations to provide potential explanations.
+
+\section{Interpretation of Key Findings}
+The out-of-the-box model has the lowest accuracy on the \textit{Invoice Number} field with 70.625\% and highest accuracy on the Invoice Date and Amount fields with over 86\%. 
+The relatively low accuracy for the invoice number is the result of a high number of null values indicated by a high null rate of 26.25\%. 
+This means that for more than one out of four input documents the out-of-the-box model cannot identify anything as a potential invoice number. 
+A possible explanation for this observation is the nature of the invoice number field, because it has the least recognizable attributes. 
+While amount and date occur in a constant data format, the invoice number can appear in new formats in different invoices. Sometimes the invoice number consists exclusively of number. 
+In other cases, it is a mixtures of numbers and letters. Also the length can vary between around four up to more than 20 characters. 
+Furthermore, the position of the invoice number in the document is not constant either. 
+The vendor name usually appears in the upper third of the invoice document and the amount is usually placed in lower third and right halve.
+For the invoice number such repeating positioning pattern are more difficult to be observed.
+
+For the comparison of the results for PDF and scanned documents an ambiguous finding has been made. 
+On the one hand, as expected with scanned documents lower accuracies and higher null rates have been found for the vendor and invoice number field. It is likely that this is the result of errors in the \ac{OCR} process.
+On the other hand, for the amount and invoice date field the opposite with higher accuracies and lower null rates for scanned documents can be observed.
+This unexpected finding is potentially related to amounts and dates being less likely to be incorrectly read by \ac{OCR} due to their recognizable features.
+However, this does not explain why the models' performance is better with scanned documents for those two field. 
+In this context it has to be considered that the margins between the scan and PDF results are small and the size of the dataset to produce the results is also probably not big enough to generalize this observation.
+
+In the second part of the results the custom model that has been trained with 110 and tested with the remaining 50 document has been the subject of interest.
+The custom model has a higher accuracy for the \textit{Invoice Number} and \textit{Invoice Date} fields and a similar but slightly lower performance on the \textit{Vendor} and \textit{Amount} fields than the benchmark.
+The custom model can be observed to perform better than the benchmark with scanned documents for all fields. However, it can also be noticed that the custom model has a lower accuracy with PDF documents for \textit{Vendor} and \textit{Amount} than the benchmark.
+
+Therefore, it can be observed that with the additional training the model became more accurate with scanned documents but at the same time lost accuracy with PDF documents. 
+In addition, the training had the most noticeable effect for the results on the \textit{Invoice Number} field. 
+While the benchmark results have remarkably high \textit{Null rates}, the custom model has been able to identify the correct value more frequently.
+Also the histograms of the document scores show an improved overall performance after the training.
+
+These outcomes indicate a overfitting tendency towards the invoice number, the invoice date and scanned documents.
+This means that there has been an imbalance in the training set leading to improved performances under specific circumstances and worse performances than previously in different scenarios.
+Again those results and indications have to be treated with care due to the relatively low sizes of the training and testing datasets.
+
+\section{Implications for real-world use-cases}
+
+It can be concluded that the key findings point out some weaknesses of the use of \acl{AI} for invoice processing:
+\begin{enumerate}
+    \item The availability of training data in large quantities is necessary to create models that can produce accurate results. However, it is challenging to acquire enough actual invoices for the training purposes, because there is a high variance in the structure of invoice documents from different sources. At the same time, some invoices contain sensitive information, which means that those documents need to be discarded or extensive pre-processing is necessary. Also the training process is time consuming, because all documents have to be manually annotated with the desired output.
+    \item It has to be noted that invoice documents are designed to be read and processed by humans and not by computer using \ac{AI}. A human with some experience has no difficulty accurately identifying the relevant data from an invoice document, while an \ac{AI}-system cannot match human performance even after being trained with hundreds of training invoices.
+    \item Finally, the processing of invoice documents with \ac{AI} can be described as prone to errors and inefficient. The input document undergoes \ac{OCR} followed by information extraction using several \ac{NLP} techniques. Depending on the required computational capacity especially the training can become an energy task, while still producing inaccurate results.
+\end{enumerate}
+These findings suggest against the use of \ac{AI} technology for automated invoice processing, because more accurate and efficient approaches exist. For example, the utilization of an electronic billing standard allows the issuance and receipt of invoices in a digital machine-readable format like XML. Those files can be automatically created by an \ac{ERP} system and processed by an efficient parsing algorithm.
+Because of this, it is suggested to establish a purely digital invoice receipt workflow based on \ac{EDI} or another electronic billing standard, instead of processing invoice documents in PDF format with \ac{AI}.
+
 \chapter{Conclusion}
 
 \section{Summary of Findings}

@@ -80,11 +80,6 @@ However, on the \textit{Amount} and \textit{Invoice Date} field the opposite can
 
 Based on those results, the hypothesis that the models' accuracy is lower on scanned invoice documents, because of the \ac{OCR} process cannot be proven as correct. The findings on the \textit{Amount} and \textit{Invoice Date} even seem to contradict this hypothesis. However, it has to be noted that the values are very close for all metrics.
 
-Looking at the histogram shown in \cref{pic:scan_pdf_1} and the reverse cumulative histogram in \cref{pic:scan_pdf_1_cum} of the document scores for scanned and PDF invoice documents, 46 PDF documents and 28 scanned documents can be observed in the category with a perfect document score of four. This means that for 57.5\% of PDF documents the model produced a perfect result. On the other hand, the modes identified all fields correctly on 35.0\% of scanned documents. 
-Moreover, while for 72 PDF documents (90\%) the model scored a document score of at least three, the number of scanned documents in same category is lower with 60 (75\%)
-Therefore, a drop from category 3 to 4 can be observed.
-Furthermore, it can be noted that for all PDF documents the model identified at least two fields correctly, while 5 times the model was only able to identify one correct field. 
-
 \begin{figure}[!ht]
     \centering 
     \includegraphics[width=0.7\textwidth]{pictures/scan_pdf.png}
@@ -97,6 +92,11 @@ Furthermore, it can be noted that for all PDF documents the model identified at 
     \caption{Reverse Cumulative Distribution of Document Scores}
     \label{pic:scan_pdf_1_cum}    % label the image for internal referencing
 \end{figure}
+
+Looking at the histogram shown in \cref{pic:scan_pdf_1} and the reverse cumulative histogram in \cref{pic:scan_pdf_1_cum} of the document scores for scanned and PDF invoice documents, 46 PDF documents and 28 scanned documents can be observed in the category with a perfect document score of four. This means that for 57.5\% of PDF documents the model produced a perfect result. On the other hand, the modes identified all fields correctly on 35.0\% of scanned documents. 
+Moreover, while for 72 PDF documents (90\%) the model scored a document score of at least three, the number of scanned documents in same category is lower with 60 (75\%)
+Therefore, a drop from category 3 to 4 can be observed.
+Furthermore, it can be noted that for all PDF documents the model identified at least two fields correctly, while 5 times the model was only able to identify one correct field. 
 
 Based on the \textit{Accuracy, Null rate} and \textit{Cleaned Accuracy} not for all fields a performance drop of the model when dealing with scanned document could be observed. However, when determining the overall usefulness, the distribution of the documents scores clearly indicates a better performance of the model with PDF documents. This effect is especially clear for the category where four out of four fields are identified correctly. It has to be noted, that the results are only useful when the values of all fields are extracted correctly, because even one single error will result in a booking mistake.
 
@@ -244,46 +244,12 @@ Even though the benchmark scores for the invoice date filed are already good, th
     \label{pic:model_bench_cum}    % label the image for internal referencing
 \end{figure}
 
-To determine the actual usefullnes of the custom model results the document score is regarded again.
+To determine the actual usefulness of the custom model results the document score is regarded again.
 \Cref{pic:model_bench} show the distribution of document scores of the custom model and the benchmark for the 50 test invoices. 
-It can be noticed that for 31 documents the custom model has been able to identify all four field correcty, which means for 62\% the custom model reached the perfect document score.
-The benchmark for four correctly identfied field lies at 24, which is just below 50\%.
-Looking at the reverse cummulative distribution shown in \cref{pic:model_bench_cum} it can be noted that
+It can be noticed that for 31 documents the custom model has been able to identify all four field correctly, which means for 62\% the custom model reached the perfect document score.
+The benchmark for four correctly identified field lies at 24, which is just below 50\%.
+Looking at the reverse cumulative distribution shown in \cref{pic:model_bench_cum} it can be noted that
 in the categories for two and three the bars for the custom model and the benchmark have similar heights.
-However, moving from category three to four, for the benchmarkt the count drops significantly more than for the custom model.
-This means that while the benchmark and the custom model have a similar number for invoices where at least two or at least three fields are correctly indentified,
+However, moving from category three to four, for the benchmark the count drops significantly more than for the custom model.
+This means that while the benchmark and the custom model have a similar number for invoices where at least two or at least three fields are correctly identified,
 the custom model does not loose as many documents when the perfect score of four is required.
-
-
-
-\newpage
-\section{Analysis of Key Findings}
-The out-of-the-box model has the lowest accuracy on the \textit{Invoice Number} field with 70.625\% and highest accuracy on the Invoice Date and Amount fields with over 86\%. 
-The relatively low accuracy for the invoice number is the result of a high number of null values indicated by a high null rate of 26.25\%. 
-This means that for more than one out of four input documents the out-of-the-box model cannot identify anything as a potential invoice number. 
-A possible explanation for this observation is the nature of the invoice number field, because it has the least recognizable attributes. 
-While amount and date occur in a constant data format, the invoice number can appear in new formats in different invoices. Sometimes the invoice number consitst exclusively of number. 
-In other cases, it is a mixtures of numbers and letters. Also the lenght can vary between around four up to more than 20 characters. 
-Furthermore, the position of the invoice number in the document is not constant either. 
-The vendor name usually appears in the upper third of the invoice document and the amount is usually placed in lower third and right halve.
-For the invoice number such repeating positioning pattern are more difficult to be observed.
-
-For the comparison of the results for PDF and scanned documents an ambiguous finding has been made. 
-On the one hand, as expected with scanned documents lower accuracies and higher null rates have been found for the vendor and invoice number field. It is likely that this is the result of errors in the \ac{OCR} process.
-On the other hand, for the amount and invoice date field the opposite with higher accuracies and lower null rates for scanned documents can be observed.
-This unexpected finding is potentially related to amounts and dates beeing less likely to be incorrectly read by \ac{OCR} due to their recognizable features.
-However, this does not explain why the models' performance is better with scanned documents for those two field. 
-In this context it has to be considered that the margins between the scan and PDF results are small and the size of the dataset to produce the results is also probably not big enough to generalize this observation.
-
-In the second part of the results the custom model that has been trained with 110 and tested with the remaining 50 document has been the subject of interest.
-The custom model has a higher accuracy for the \textit{Invoice Number} and \textit{Invoice Date} fields and a similar but slightly lower performance on the \textit{Vendor} and \textit{Amount} fields than the benchmark.
-The custom model can be observed to perform better than the benchmark with scanned documents for all fields. However, it can also be noticed that the custom model has a lower accuracy with PDF documents for \textit{Vendor} and \textit{Amount} than the benchmark.
-
-Therefore, it can be observed that with the additional training the model became more accurate with scanned documents but at the same time lost accuracy with PDF documents. 
-In addition, the training had the most noticeable effect for the results on the \textit{Invoice Number} field. 
-While the benchmark results have remarkably high \textit{Null rates}, the custom model has been able to identify the correct value more frequently.
-Also the histograms of the document scores show an improved overall performance after the training.
-
-These outcomes indicate a overfitting tendency towards the invoice number, the invoice date and scanned documents.
-This means that there has been an imbalance in the training set leading to improved performances under specific circumstances and worse performances than previously in different scenarios.
-Again those results and indications have to be treated with care due to the relatively low sizes of the training and testing datasets.
