@@ -26,7 +26,7 @@ To analyze the results of the out-of-the-box model, the performances on the diff
 
 The fields where the model reaches the highest accuracy are \textit{Amount} and \textit{Invoice Date} with 86.250\% and 86.875\% respectively. The same two fields have the highest \textit{Cleaned Accuracy} with over 97\%. The \textit{Invoice Number} field has the lowest accuracy with 70.625\% and the highest \textit{Null rate} with 26.25\%. The high \textit{Null rate} is the main factor for the relatively low overall accuracy. Looking at the \textit{Cleaned Accuracy} the model extracted the correct \textit{Invoice Number} 95.76\% of the time whenever it returned a non-null output. Having the lowest \textit{Null rate} of 6.25\% on the vendor field, the model's accuracy of 81.875\% is close to the \textit{Cleaned Accuracy} of 87.33\%, which is the lowest among all fields. 
 
-It can be noticed that the results for \textit{Amount} and \textit{Invoice Date} lie within one percentage point across all categories. A potential explanation for this similarity is that both field have a recognizable data format and are typically found in a constant area of most invoices. In particular, the \textit{Invoice Date} is often written in the upper right are of an invoice, while the \textit{Amount} is usually displayed on the right hand side of the listing of the line items.
+It can be noticed that the results for \textit{Amount} and \textit{Invoice Date} lie within one percentage point across all categories. A potential explanation for this similarity is that both field have a recognizable data format and are typically found in a constant area of most invoices. In particular, the \textit{Invoice Date} is often written in the upper right area of an invoice, while the \textit{Amount} is usually displayed on the right hand side of the listing of the line items.
 
 In turn, \textit{Vendor} and \textit{Invoice Number} occur in a less predictable way and have less recognizable formats, partly explaining the model's lower accuracy on those fields. 
 
@@ -132,7 +132,7 @@ The custom model is built on the default invoice data extraction model of UiPath
 In \cref{table:Model_Bench_Vendor} the results for the \textit{Vendor} field of the custom model and the benchmark are compared. 
 Looking at the overall accuracy, the custom model result is lower by two percentage points than the benchmark with an accuracy of 76.0\%. 
 With PDF documents, the accuracy gap is larger with 75.0\% for the custom model and 87.5\% as benchmark. 
-On scanned invoices the custom model has a higher accuracy with 73.08\% compared to 65.38\%. 
+On scanned invoices, the custom model has a higher accuracy with 73.08\% compared to 65.38\%. 
 Also the custom model has a remarkably low null rate of 3.85\% on scanned documents, compared to 11.54\% of the benchmark.
 Furthermore, it stands out that the benchmark has a cleaned accuracy value of 100\% with PDF documents where the custom models drops to 90.48\%.
 For the vendor field it can be noticed that performance of the custorm model is below the benchmark, because of a much lower accuracy with PDF documents.
@@ -163,11 +163,11 @@ Nevertheless, it can also be noted that the accuracy with scanned documents impr
 
 The invoice number field has been the field with the lowest accuracy for the out-of-the-box model. 
 \Cref{table:Model_Bench_Number} compares the results of the custom model to the benchmark, which is based on the out-of-the-box model performance.
-It can be clearly observed that the custom model has a higher accuracy that the benchmark overall and individually for PDF and scanned invoices. 
+It can be clearly observed that the custom model has a higher accuracy than the benchmark overall and individually for PDF and scanned invoices. 
 Even thought the benchmark has a cleaned accuracy score of 100\% across all three categories, high null rates of 22\% overall, 12.5\% on PDF and 30.77\% result a lower accuracy.
-Overall the custom model the custom model has an accuracy of 88\%, a null rate of 6\% and a cleaned accuracy of 93.62\%. 
-On PDF documents the custom model has a perfect cleaned accuracy and a null rate of 4.17\% leading to an accuracy score of 95.83\%.
-Again a performance drop from PDF to scan can be observed. The custom model has an accuracy of 80.77\% for scanned documents with a null rate of 7.69\% and a cleaned accuracy of 87.5\%.
+Overall, the custom model has an accuracy of 88\%, a null rate of 6\% and a cleaned accuracy of 93.62\%. 
+On PDF documents, the custom model has a perfect cleaned accuracy and a null rate of 4.17\% leading to an accuracy score of 95.83\%.
+Again, a performance drop from PDF to scan can be observed. The custom model has an accuracy of 80.77\% for scanned documents with a null rate of 7.69\% and a cleaned accuracy of 87.5\%.
 For the invoice number field a significant improvement through the additional training examples can be noticed.
 
 \subsection*{Amount}

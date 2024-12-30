@@ -22,7 +22,8 @@
 % Declaration of Authorship
 %\includepdf[pages=-]{declaration.pdf} 
 
-%\include{framework/abstract}            % Abstract
+\include{framework/abstract}            % Abstract
+\renewcommand*\contentsname{Table of Contents}
 \tableofcontents                        % Contents
 \listoffigures                          % List of Figures
 \listoftables                           % List of Tables
@@ -34,16 +35,16 @@
 \include{content/1_introduction}
 \include{content/2_theoretical_foundations}
 \include{content/3_methodology}
-%\include{content/4_results}
-%\include{content/5_conclusion}
+\include{content/4_results}
+\include{content/5_conclusion}
 
 % Bibliography
 \begin{singlespace}
     \printbibliography
 \end{singlespace}
 
-\backmatter
-\pagenumbering{Alph}
-\chapter{Apprendix}
+%\backmatter
+%\pagenumbering{Alph}
+%\chapter{Apprendix}
 
 \end{document}
