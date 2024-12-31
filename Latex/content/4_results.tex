@@ -20,7 +20,7 @@ To analyze the results of the out-of-the-box model, the performances on the diff
         Invoice Date     & 86.875\%   & 10.6 \%  & 97.20\% \\
         \bottomrule % separator line
     \end{tabular}
-    \caption{Comparison of Extracted Field}
+    \caption{Comparison of out-of-the-box results for extracted field}
     \label{table:Field_Com}
 \end{table}
 
@@ -33,13 +33,13 @@ In turn, \textit{Vendor} and \textit{Invoice Number} occur in a less predictable
 \begin{figure}[!ht]
     \centering 
     \includegraphics[width=0.7\textwidth]{pictures/results.png}
-    \caption{Distribution of Document Scores}
+    \caption{Distribution of Document Scores for out-of-the-box model}
     \label{pic:results_1}    % label the image for internal referencing
 \end{figure}
 \begin{figure}[!ht]
     \centering 
     \includegraphics[width=0.7\textwidth]{pictures/results_cum.png}
-    \caption{Reverse Cumulative Distribution of Document Scores}
+    \caption{Reverse Cumulative Distribution of Document Scores for out-of-the-box model}
     \label{pic:results_1_cum}    % label the image for internal referencing
 \end{figure}
 
@@ -47,6 +47,7 @@ To evaluate the usefulness of the model in a real-world context, the \textit{Doc
 
 The plain distribution only shows the frequency of the individual scores and ignores that if the model identifies three fields correctly it also identified at least two fields correctly. Because of this, the reverse cumulate distribution shown in \cref{pic:results_1_cum} is used to indicate how many documents received a document score of at least the given score. 132 times and 82.5\% of the time at least three fields have been correctly identified. Although in \cref{pic:results_1} the most frequent document score is four, in \cref{pic:results_1_cum} a clear drop from category three to four can be observed. This means that the 52 input documents for which the model identified three variables correctly are missing in the category where all four fields have to be correctly identified.
 
+\subsection*{Comparison of the performance on PDF and scanned documents}
 Another factor investigated for potentially having an effect on the model's performance is the nature of the input document. In particular, whether it is a digitally created PDF document of the scan of a printed document. The scanned documents have to be processed with \ac{OCR} before the data extraction. This adds an additional process step that may be the cause for errors. Because of this, it is suspected that the model will have a lower accuracy on those documents. The comparison between the model's performance on digitally created PDF and scanned invoice documents is shown in \cref{table:Field_Com_Scan_PDF}.
 
 \begin{table}[ht]   % table position
@@ -70,7 +71,7 @@ Another factor investigated for potentially having an effect on the model's perf
         
         \bottomrule % separator line
     \end{tabular}
-    \caption{Accuracy of PDF and Scan}
+    \caption{Comparison of PDF and Scan results of the out-of-the-box model}
     \label{table:Field_Com_Scan_PDF}
 \end{table}
 
@@ -80,19 +81,6 @@ However, on the \textit{Amount} and \textit{Invoice Date} field the opposite can
 
 Based on those results, the hypothesis that the models' accuracy is lower on scanned invoice documents, because of the \ac{OCR} process cannot be proven as correct. The findings on the \textit{Amount} and \textit{Invoice Date} even seem to contradict this hypothesis. However, it has to be noted that the values are very close for all metrics.
 
-\begin{figure}[!ht]
-    \centering 
-    \includegraphics[width=0.7\textwidth]{pictures/scan_pdf.png}
-    \caption{Distribution of Document Scores}
-    \label{pic:scan_pdf_1}    % label the image for internal referencing
-\end{figure}
-\begin{figure}[!ht]
-    \centering 
-    \includegraphics[width=0.7\textwidth]{pictures/scan_pdf_cum.png}
-    \caption{Reverse Cumulative Distribution of Document Scores}
-    \label{pic:scan_pdf_1_cum}    % label the image for internal referencing
-\end{figure}
-
 Looking at the histogram shown in \cref{pic:scan_pdf_1} and the reverse cumulative histogram in \cref{pic:scan_pdf_1_cum} of the document scores for scanned and PDF invoice documents, 46 PDF documents and 28 scanned documents can be observed in the category with a perfect document score of four. This means that for 57.5\% of PDF documents the model produced a perfect result. On the other hand, the modes identified all fields correctly on 35.0\% of scanned documents. 
 Moreover, while for 72 PDF documents (90\%) the model scored a document score of at least three, the number of scanned documents in same category is lower with 60 (75\%)
 Therefore, a drop from category 3 to 4 can be observed.
@@ -100,9 +88,22 @@ Furthermore, it can be noted that for all PDF documents the model identified at 
 
 Based on the \textit{Accuracy, Null rate} and \textit{Cleaned Accuracy} not for all fields a performance drop of the model when dealing with scanned document could be observed. However, when determining the overall usefulness, the distribution of the documents scores clearly indicates a better performance of the model with PDF documents. This effect is especially clear for the category where four out of four fields are identified correctly. It has to be noted, that the results are only useful when the values of all fields are extracted correctly, because even one single error will result in a booking mistake.
 
+\begin{figure}[p]
+    \centering 
+    \includegraphics[width=0.7\textwidth]{pictures/scan_pdf.png}
+    \caption{Distribution of Document Scores split in Scan and PDF for out-of-the-box model}
+    \label{pic:scan_pdf_1}    % label the image for internal referencing
+\end{figure}
+\begin{figure}[p]
+    \centering 
+    \includegraphics[width=0.7\textwidth]{pictures/scan_pdf_cum.png}
+    \caption{Reverse Cumulative Distribution of Document Scores split in Scan and PDF for out-of-the-box model}
+    \label{pic:scan_pdf_1_cum}    % label the image for internal referencing
+\end{figure}
+
 \newpage
 \section{Custom Model Performance}
-To evaluate the performance of the custom model, its results on the test data set are compared to a benchmark. As benchmark the performance of the out-of-the-box model is used limited to the results on the test data set to ensure the same foundation for comparison. In contrast to the evaluation of the out-of-box model 2.1 not the performance on the different target variables are compared to each other but the performances of the custom model is compared to the benchmark for each field separately.
+To evaluate the performance of the custom model, its results on the test data set are compared to a benchmark. As benchmark the performance of the out-of-the-box model is used limited to the results on the test data set to ensure the same foundation for comparison. In contrast to the evaluation of the out-of-box model not the performance on the different target variables are compared to each other but the performances of the custom model is compared to the benchmark for each field separately.
 
 The custom model is built on the default invoice data extraction model of UiPath that is used as the benchmark. Because the custom model has been trained on additional training data, it is expected to produce more accurate results than the benchmark results.
 
@@ -125,7 +126,7 @@ The custom model is built on the default invoice data extraction model of UiPath
 
         \bottomrule % separator line
     \end{tabular}
-    \caption{Results on Vendor Field}
+    \caption{Custom model results on Vendor Field}
     \label{table:Model_Bench_Vendor}
 \end{table}
 
@@ -157,7 +158,7 @@ Nevertheless, it can also be noted that the accuracy with scanned documents impr
 
         \bottomrule % separator line
     \end{tabular}
-    \caption{Results on Invoice Number Field}
+    \caption{Custom model results on Invoice Number Field}
     \label{table:Model_Bench_Number}
 \end{table}
 
@@ -189,7 +190,7 @@ For the invoice number field a significant improvement through the additional tr
 
         \bottomrule % separator line
     \end{tabular}
-    \caption{Results on Amount Field}
+    \caption{Custom model results on Amount Field}
     \label{table:Model_Bench_Amount}
 \end{table}
 
@@ -218,7 +219,7 @@ Because the the out-of-the-box model already scored a high accuracy for the amou
 
         \bottomrule % separator line
     \end{tabular}
-    \caption{Results on Date Field}
+    \caption{Custom model results on Date Field}
     \label{table:Model_Bench_Date}
 \end{table}
 
@@ -234,13 +235,13 @@ Even though the benchmark scores for the invoice date filed are already good, th
 \begin{figure}[!ht]
     \centering 
     \includegraphics[width=0.7\textwidth]{pictures/model_bench.png}
-    \caption{Distribution of Document Scores}
+    \caption{Distribution of Document Scores for custom model compared to benchmark}
     \label{pic:model_bench}    % label the image for internal referencing
 \end{figure}
 \begin{figure}[!ht]
     \centering 
     \includegraphics[width=0.7\textwidth]{pictures/model_bench_cum.png}
-    \caption{Reverse Cumulative Distribution of Document Scores}
+    \caption{Reverse Cumulative Distribution of Document Scores for custom model compared to benchmark}
     \label{pic:model_bench_cum}    % label the image for internal referencing
 \end{figure}
 

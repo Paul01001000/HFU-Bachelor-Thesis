@@ -4,7 +4,6 @@
 \usepackage{cmap}               % PDF character encoding
 \usepackage[T1]{fontenc}        % 8-bit font encoding
 \usepackage[utf8]{inputenc}     % UTF-8 input encoding
-\usepackage{pdfpages}
 
 
 % ##################################################
@@ -19,7 +18,7 @@
 % PDF SETTINGS
 % ##################################################
 \usepackage[
-    colorlinks=false,
+    colorlinks=true,
    	linkcolor=black,
    	citecolor=black,
   	filecolor=black,
@@ -131,20 +130,6 @@
 % ABBREVIATIONS
 % ##################################################
 \usepackage[printonlyused]{acronym}
-
-
-% ##################################################
-% APPENDIX
-% ##################################################
-\usepackage[title,titletoc]{appendix}
-
-% appendix chapter
-\newcommand{\appendixchapter}[1]{
-    \cleardoublepage
-    \pagenumbering{arabic}
-    \renewcommand{\thepage}{\thechapter-\arabic{page}}
-    \chapter{#1}
-}
 
 
 % ##################################################

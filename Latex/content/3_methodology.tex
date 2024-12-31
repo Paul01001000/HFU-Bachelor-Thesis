@@ -8,7 +8,7 @@ The experiment consists of two stages. In the first stage, the out-of-the-box pr
 
 For the second stage, a new custom model based on the out-of-the-box pre-trained model is instantiated and trained with additional examples. For this, the invoice documents are randomly separated into one subset for training and one for testing. To evaluate the performance of the custom model, the results from the first stage on the test set are used as benchmark. 
 
-All UiPath workflow files that have been used for this research as well as the python script for analyzing the results and the raw data can be accessed on GitHub \url{https://github.com/Paul01001000/HFU-Bachelor-Thesis}.
+All UiPath workflow files that have been used for this project as well as the python notebook for analyzing the results and the raw data consisting of verification database, test results and invoice documents can be accessed on GitHub \url{https://github.com/Paul01001000/HFU-Bachelor-Thesis}.
 
 \subsection{UiPath Document Understanding}
 
@@ -34,13 +34,13 @@ According to Gartner \cite{gartner2023magicquadrant} UiPath is one of the leadin
     \label{pic:UiPath_2}    % label the image for internal referencing
 \end{figure}
 
-Using the just described UiPath products a simple workflow has been developed to automatically process the given invoices.
-Before the workflow execution, all documents are uploaded into a cloud storage bucket in the orchestrator. \Cref{pic:UiPath_1} outlines the data extraction process workflow that is used to produce the results for this research. 
+Using the described UiPath products, a simple workflow has been developed to automatically process the given invoices.
+Before the workflow execution, all documents are uploaded into a cloud storage bucket in the orchestrator. \Cref{pic:UiPath_1} outlines the data extraction process workflow that is used to produce the results for this project. 
 \begin{enumerate}
     \item The process starts by retrieving a list of all files stored in the connected cloud storage bucket. 
     \item The \textit{for-loop} iterates over all files and processes them in its inner process workflow. For each file the file name is stored in a local variable and is printed as a log message. 
     \item The current file is locally downloaded and forwarded to the \textit{Extract Document Data} component, where the information is automatically extracted. The component can be configured by selecting either an out-of-the-box or a custom Document Understanding Project and the corresponding extractor model. This process step is unfolded in \cref{pic:UiPath_2}.
-    \item The results are saved into a text file and uploaded to the results folder of the storage bucket in the orchestrator. The results are also printed as a log message. 
+    \item The results are saved as a text file and uploaded to the results folder in the storage bucket in the orchestrator. The results are also printed as a log message. 
     \item Finally, the current file is uploaded to the processed folder and deleted from the input folder.
 \end{enumerate}
 
@@ -49,11 +49,11 @@ In a second step, the information is extracted using the selected model.
 
 \subsection{Analyzing the results}
 To analyze the results, the Pandas library in Python is used. The result text files are loaded into a Pandas data table together with the database file
-containing the true values of all invoices. When all the data is successfully imported, minor pre-processing activities like datatype conversions, stripping of leading spaces and unification of the the date format are performed.
+containing the manually extracted values of all invoices. When all the data is successfully imported, minor pre-processing activities like datatype conversions, stripping of leading spaces and unification of the the date format are performed.
 Using the the file name as unique identifier the extracted results are compared with the actual values. For \textit{Invoice Date, Invoice Number}
 and \textit{Amount} the exact match is required for the field to be marked as correctly identified. 
-The \textit{Vendor} counts as correctly identified if the extracted string contains the actual vendor name as a substring. This additional tolerance is needed to prevent that minor inaccuracies of the data in the database lead to correctly identified values to be marked as incorrect.
-Like this the results are made quantifiable and further statistical metrics can be calculated.
+The \textit{Vendor} counts as correctly identified if the extracted string contains the actual vendor name as a substring. This additional tolerance is needed to prevent that minor inaccuracies of the data in the verification table lead to correctly identified values to be marked as incorrect.
+Like this, the results are made quantifiable and further statistical metrics can be calculated.
 
 \newpage
 \section{Data Collection and Pre-processing}
@@ -63,11 +63,10 @@ For this project, a total of 322 invoice documents have been provided by the com
 
 The selected invoices are dated between 2019 and 2024 and consist of 80 digitally created documents as well as 80 scans of printed documents. 
 The language of the majority of the documents is German. However, there is a small amount of invoices in the languages English, Croatian and Slovenian. The non German invoices make up less than 10\%.
-The majority of invoices use Euro as currency and less than 5\% use a different currency. In particular, there are some documents using British Pound, Swiss Franc and Croatian Kuna. For this project for the amount only the number is relevant and the currency is disregarded.
-Some samples of the invoices can be found in the appendix.
+The majority of invoices use Euro as currency and less than 5\% use a different currency. In particular, there are some documents using British Pound, Swiss Franc and Croatian Kuna. For this project, for the amount only the number is relevant and the currency is disregarded.
 
-To be able to verify the extracted results a table containing the true values of each documents is created.
-For this, all 160 invoice documents have been manually analyzed and for each invoice the file name, vendor name, invoice number, payment amount and invoice date are stored in an Excel spreadsheet. \Cref{tab:db} displays the first four rows whithout the file name column. The raw data of this table as csv-file is available on Github \url{https://github.com/Paul01001000/HFU-Bachelor-Thesis}. \\
+To be able to verify the extracted results a table containing the manually extracted values of each documents is created.
+For this, all 160 invoice documents have been manually analyzed and for each invoice the file name, vendor name, invoice number, payment amount and invoice date are stored in an Excel spreadsheet. \Cref{tab:db} displays the first four rows whithout the file name column. The raw data of this table as csv-file is available on Github. Also, some samples of the invoice documents can be found on GitHub \url{https://github.com/Paul01001000/HFU-Bachelor-Thesis}. \\
 
 \begin{table}[ht]
     \centering
@@ -89,7 +88,8 @@ For this, all 160 invoice documents have been manually analyzed and for each inv
 \section{Model Selection}
 %Justify the choice of generative AI model (e.g., GAN, VAE) based on the specific requirements of the task.
 %Outline the architecture of the selected model, including input and output layers, hidden layers, and activation functions.
-Because UiPath \textit{Document Understanding} is a commercial product no specific details about its way of working and architecture are publicly available. It can be concluded that supervised \acf{ML} is used, because of the nature of the recognition and extraction task as well as the training process with labeled datasets. However, is not public which \ac{ML}-algorithm or which kind of artificial neural network is utilized.
+Because UiPath \textit{Document Understanding} is a commercial product no specific details about its way of working and architecture are publicly available. It can be concluded that supervised \acf{ML} is used, because of the nature of the recognition and extraction task as well as the training process with labeled datasets. However, is not public which \ac{ML}-algorithm or which kind of artificial neural network is utilized. Also, it cannot be obtained how the training of the pre-trained model has been executed and on which data basis.
+
 \subsection*{Out-of-the-box Model}
 In the first stage of the project, the out-of-the-box \acf{ML} model for invoice processing is investigated. As displayed in \cref{pic:UiPath_2} the default invoice understanding model extracts various information about the customer, vendor, invoice items and payment details. The extracted fields include the target variables of this project as well as \textit{shipping address} and \textit{Tax amount}. According to UiPath \cite{uipathdoc} more than 30 different fields and items are supported as well as a currency classifier. This model has been pre-trained and can be used right away without additional training. It is expected to handle most standard cases. In principle, it can be used for any language using the Latin alphabet. For Chinese or Indian invoices separate designated models exists.
 \subsection*{Custom Model}

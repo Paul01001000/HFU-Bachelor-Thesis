@@ -2,31 +2,33 @@
 
 \section{Document Understanding}
 \subsection{Definition and Overview}
-In general, Document Understanding is the process of ...
-Traditionally, Document Understanding has been mainly concerned with the conversion of paper-based documents into a format that is readable for a computer \cite{taylor1994integrated}. 
-With advancing digitization, Document Understanding covers the processing of digitally created documents as well. 
+In general, Document Understanding is the process of automated extraction of information from documents.
+Traditionally, Document Understanding has been mainly concerned with the conversion of paper-based documents into a format that is readable for a computer.
+With advancing digitization, Document Understanding covers the processing of digitally created documents as well. \cite{taylor1994integrated,aiello2002document}. 
 
-Traditionally, Document Understanding consists of an image processing step followed by a \ac{NLP} step. For both steps rule-based as well as \ac{ML} techniques exist. Paper-based documents start the Document Understanding process as scanned hard-copy of printed documents. Because these scans are essentially images representing the document at hand, in the first step the corresponding text has to be determined in a process called \ac{OCR}. During the image processing step the scanned document is converted from an image document format into a text document format. In the \ac{NLP} step the obtained text is processed to extract relevant information.
+Document Understanding systems need text and image processing capabilities.
+Traditionally, Document Understanding consists of an image processing step followed by a \acf{NLP} step. For both steps, rule-based as well as \acf{ML} techniques exist. Paper-based documents start the Document Understanding process as scanned hard-copies of printed documents. Because these scans are essentially images that represent the document at hand, in the first step the corresponding text has to be determined in a process called \acf{OCR}. During the image processing step, the scanned document is converted from an image document format into a text document format. In the \ac{NLP} step the obtained text is processed to extract relevant information. \cite{taylor1994integrated}. 
 
-Digitally created documents already contain the information as text elements. Therefore, in principle the image processing part can be skipped. However, a different form of \ac{OCR} can still be helpful by providing layout information about the document. This is useful, because certain information tend to be more likely to be found is some regions of the document.
+Digitally created documents already contain the information as text elements. Therefore, in principle, the image processing part can be skipped. However, a different form of \ac{OCR} can still be helpful by providing layout information about the document. This is useful, because certain information tend to be more likely to be found in some regions of the document. \cite{wang2023docllm}
 
-In summary, \ac{OCR} is needed to extract the text from document images and to transform them into unstructured text.
+In summary, \ac{OCR} is needed to extract the raw text from document images and to transform them into a digital text representation.
 
-\ac{IE} and its sub-task \ac{NER} are used to extract relevant information from unstructured text and transform documents into a logically structured data representation.
+\acf{IE} and its sub-task \acf{NER} are used to extract relevant information from unstructured text and transform documents into a logically structured data representation.
 
-In the following, the three central Document Understanding methods \ac{OCR}, \ac{NER}, and \ac{IE} are introduced. For each technique the history, application, and advancements through \ac{ML} are presented.
+In the following, the three central Document Understanding methods \ac{OCR}, \ac{NER}, and \ac{IE} are introduced. For each technique, the history, application, and advancements through \ac{ML} are presented.
 %Review traditional methods like optical character recognition (OCR), named entity recognition (NER), and information extraction (IE).
 %Discuss recent advancements in machine learning and deep learning for document understanding.
 %Analyze the strengths and weaknesses of existing approaches.
 \subsection{Optical Character Recognition}
-\ac{OCR} is the process of converting images of text into machine-encoded text for example as ASCII code. In principle, \ac{OCR} can be thought of as a computer "reading" the text contained in an image. \cite{eikvil1993optical}
+\acf{OCR} is the process of converting images of text into machine-encoded text for example as ASCII code. In principle, \ac{OCR} can be thought of as a computer "reading" the text contained in an image. 
 Because of the various use cases that machine reading offers, \ac{OCR} has been of interest for researches for several decades. In the 1960's the first commercial \ac{OCR} machines have been released. However, theses systems have been limited to a set of standardized fonts, whose distinctive shapes have been automatically matched to the corresponding letter. 
-With advances in computer hardware and and easier access to computing resources, the first \ac{OCR} systems have been released as software in the 1970's. 
-The challenge for any \ac{OCR} system is to provide an accurate recognition of printed as well as hand-written text.
-Typically, in traditional \ac{OCR} systems the process starts by scanning the physical document to create a digital representation. Followed by locating the regions where text can be found. In the identified areas the text components are isolated from the rest of the image. When the scanned image contains noise for example due to a low resolution or errors from the segmentation of the image, pre-processing is necessary to increase the character recognition accuracy. Pre-processing can include applying filters to smooth the edges of the digitized characters and normalization to get characters of similar size and orientation. For the actual identification of the character, various different approaches exist. This part is considered the biggest challenge of \ac{OCR}. While early systems relied on template character matching techniques which are sensitive to noise and variation, more advanced techniques use mathematical transforms (e.g. Fourier transform) of the pixel values to discover identifying characteristics. The most advanced approach is based on neural networks that have been trained with a wide range of examples to recognize patterns. When all characters and symbols are converted in final step they will be grouped together into strings based on their positions and distances. Finally, some errors can be detected and corrected by checking for incorrect spelling with a underlying dictionary.
+With advances in computer hardware and easier access to computing resources, the first \ac{OCR} systems have been released as software in the 1970's. 
+The challenge for any \ac{OCR} system is to provide an accurate recognition of printed as well as hand-written text. \cite{eikvil1993optical}
+
+Typically, in traditional \ac{OCR} systems the process starts by scanning the physical document to create a digital representation. Followed by locating the regions where text can be found. In the identified areas the text components are isolated from the rest of the image. When the scanned image contains noise for example due to a low resolution or errors from the segmentation of the image, pre-processing is necessary to increase the character recognition accuracy. Pre-processing can include applying filters to smooth the edges of the digitized characters and normalization to get characters of similar size and orientation. For the actual identification of the character, various different approaches exist. This part is considered the biggest challenge of \ac{OCR}. While early systems relied on template character matching techniques which are sensitive to noise and variation, more advanced techniques use mathematical transforms (e.g. Fourier transform) of the pixel values to discover identifying characteristics. The most advanced approach is based on neural networks that have been trained with a wide range of examples to recognize patterns. When all characters and symbols are converted in a final step, they will be grouped together into strings based on their positions and distances. Finally, some errors can be detected and corrected by checking for incorrect spelling with a underlying dictionary.
 \cite{eikvil1993optical,nagy1999optical}
 
-Generally, \ac{OCR} is known as a rather unreliable technology and to be prone to a wide range of errors. Especially, low resolution or low contrast can lead to a higher error rate. Also, some \ac{OCR} cannot always distinguish between very similar looking characters (e.g. the letter O and the number 0). Symbols appearing less frequently are also more likely to result in errors. Finally, special typographic features like unusual fonts can cause errors as well.
+Generally, \ac{OCR} is known as a rather unreliable technology and to be prone to a wide range of errors. Especially, low resolution or low contrast can lead to a higher error rate. Also, some \ac{OCR} systems cannot always distinguish between very similar looking characters (e.g. the letter O and the number 0). Symbols appearing less frequently are also more likely to result in errors. Finally, special typographic features like unusual fonts can cause errors as well.
 \cite{nagy1999optical,baird2004robust}
 
 To improve \ac{OCR} robustness and accuracy a number of process steps can be considered. On the one hand, advanced image processing methods can be adapted to reduce the noise in the image during pre-processing. On the other hand, in the context of Document Understanding it can be taken advantage of the observation that most documents are created in a single font. Therefore, systems can be trained specifically and adapted for the kind of document the system is supposed to handle most effectively.
@@ -35,7 +37,7 @@ A more general improvement is concerned with the approach of recognizing multipl
 The Tesseract software developed by HP and Google has been considered as one of the biggest advancements and is regarded as one of the most reliable \ac{OCR} systems of the 2000's. Tesseract is based on a \ac{LSTM} neural network that enables the system to "remember" the already processes characters to make more accurate predictions for the following character. \cite{Tesseract,hochreiter1997long}
 
 \subsection{Information Extraction}
-\ac{IE} is concerned with automatically extracting information from unstructured or semi-structured machine readable documents. \ac{IE} aims to transform unstructured text into structured data to enable computational analysis and automated reasoning. To achieve this, \ac{IE}-systems represent information written in natural language as a structured database. By extracting the logical form of the input text, \ac{IE} makes the identification of entities, relationships, and their semantic meanings within a specific domain possible. \ac{IE} is based on concepts of computer linguistics and usually uses methods from the related field of \acl{NLP}. In the context of Document Understanding, \ac{IE} plays an important role, because most documents contain mainly unstructured information and can therefore not be directly processed by machines. \cite{hobbs2010information,church1995commercial}
+\acf{IE} is concerned with automatically extracting information from unstructured or semi-structured machine readable documents. \ac{IE} aims to transform unstructured text into structured data to enable computational analysis and automated reasoning. To achieve this, \ac{IE}-systems represent information written in natural language as a structured database. By extracting the logical form of the input text, \ac{IE} makes the identification of entities, relationships, and their semantic meanings within a specific domain possible. \ac{IE} is based on concepts of computer linguistics and usually uses methods from the related field of \acf{NLP}. In the context of Document Understanding, \ac{IE} plays an important role, because most documents contain mainly unstructured information and, therefore, cannot be directly processed by machines. \cite{hobbs2010information,church1995commercial}
 
 Just like for \ac{OCR} the roots of \ac{IE} can be traced back until the 1960's, where the first concepts of template-based \ac{IE} systems have been published. The series of seven \ac{MUC} between 1987 and 1998 are considered as a main driver behind the development of \ac{IE}. The \ac{MUC} have been focused on extracting information from news articles in a specific domain. The final two \acs{MUC} focused on \acf{NER}, which is an important sub-task of \ac{IE}. The goal of \ac{NER} is to identify meaningful objects in a text.
 \cite{hobbs2010information,cowie1996information,black1998facile}
@@ -43,7 +45,7 @@ Just like for \ac{OCR} the roots of \ac{IE} can be traced back until the 1960's,
 The most basic \ac{IE} approach is based on templates. An example for the template-based approach is the extraction of information that occur in a constant sequence like e-mail addresses or dates using a regular expression as template. However, this approach is quite limited if confronted with rather vague information that does not exactly fit in the categories of the underlying template. Another central challenge of \acf{IE} is the automated decision which information is relevant and which parts can be ignored without loosing important details. For those reasons, more advanced techniques from \ac{NLP} are required for more robust results.
 \cite{Wilks1997InformationEA,cowie1996information}
 
-A promising approach is the idea of so-called learning \acf{IE} systems that do not rely on set in stone templates but use either statistical techniques or \ac{ML} algorithms. 
+A promising approach is the idea of so-called learning \acf{IE} systems that do not rely on  templates but use either statistical techniques or \ac{ML} algorithms. 
 \cite{hobbs2010information,cardie1997empirical}
 
 \subsection{Named Entity Recognition}
@@ -57,15 +59,14 @@ For \ac{NER} to be successful an initial knowledge base also known as corpus in 
 A related challenge in this context is the so-called "coreference resolution", which is concerned with the case when there are multiple names for the same entity. For example, "Volkswagen" and its abbreviation "VW" should be linked to the same organization entity.
 \cite{cowie1996information,cardie1997empirical}
 
-For the 7th \ac{MUC} Black et al.\cite{black1998facile} developed a rule-based \ac{NER} system.
-
-Besides its rigid nature, another major disadvantage of the rule-based approach is the labor intensity that goes into the manual definition of all rules. A suggested alternative are learning \ac{NER} systems that use \ac{ML} techniques and neural networks instead of set in stone rules.
+For the 7th \ac{MUC} Black et al.\cite{black1998facile} developed a rule-based \ac{NER} system that achieved convincing results.
+However, a major disadvantage of the rule-based approach is the labor intensity that goes into the manual definition of all rules. Furthermore, rule-based \ac{NER} systems are rather rigid and mostly specific to a certain domain. A suggested alternative for more robust results across domains and reduction of the manual effort are learning \ac{NER} systems that use statistical or \ac{ML} techniques and neural networks instead of set in stone rules.
 \cite{hobbs2010information}
 
 \newpage
 \section{Natural Language Processing}
 \subsection{Overview and History}
-\ac{NLP} is concerned with the computer-based processing of information written in natural language. Typical tasks of \ac{NLP} are text classification, natural language understanding, and generation. \ac{NLP} is used for machine translation, text summarization, and chatbots.In the context of Document Understanding, \ac{NLP} provides important tools and techniques for \acf{IE}. \cite{aiello2002document}
+\ac{NLP} is concerned with the computer-based processing of information written in natural language. Typical tasks of \ac{NLP} are text classification, natural language understanding, and generation. \ac{NLP} is used for machine translation, text summarization, and chatbots. In the context of Document Understanding, \ac{NLP} provides important tools and techniques for \acf{IE}. \cite{aiello2002document}
 
 For the first time, the automated processing and generation of natural language have been mentioned by Alan Turin in 1950 \cite{Turing1950}. Since then, \ac{NLP}-systems evolved from the initial rule-based approach to statistical concepts and finally using \ac{ML} and \acfp{ANN}. Before the 1980s, most \ac{NLP} systems relied on complex hand-written rules. Up until the early 2000s, statistical models have been the dominant method for \ac{NLP}. The first notable breakthrough of neural \ac{NLP} happened in 2003, when Benio et al. \cite{bengio} outperformed the state-of-the-art statistical language models using an \ac{ANN}.
 
@@ -74,7 +75,7 @@ Independent from the technical approach, any \ac{NLP}-system is based on a conte
 
 \subsection{Statistical NLP}
 Statistical \ac{NLP} models aim to learn the probability of specific sequences of words that occur in the underlying text corpus.
-The traditional statistical approach is based on so-called n-grams, which are instances of words that are commonly grouped together. Examples for bi-grams (\textit{n = 2}) are "Artificial Intelligence" or "New York". "Natural Language Processing" is an example of an n-gram, where \textit{n = 3}. N-gram models create probability tables for the next word given the current word. Disadvantages of this approach are that n-gram models cannot capture relations between words that are outside of the current window of size \textit{n} and therefore cannot deal with unseen word pattern. For small values of \textit{n} this approach is computationally efficient. However, as \textit{n} grows, the number of potential n-grams follows an exponential growth. This effect is know as "curse of dimensionality" and can be mitigated using \acp{ANN}
+The traditional statistical approach is based on so-called \textit{n-grams}, which are instances of words that are commonly grouped together. Examples for \textit{bi-grams} (\textit{n = 2}) are "Artificial Intelligence" or "New York". "Natural Language Processing" is an example of an n-gram, where \textit{n = 3}. n-gram models create probability tables for the next word given the current word. Disadvantages of this approach are that n-gram models cannot capture relations between words that are outside of the current window of size \textit{n} and therefore cannot deal with unseen word pattern. For small values of \textit{n} this approach is computationally efficient. However, as \textit{n} grows, the number of potential n-grams follows an exponential growth. This effect is know as "curse of dimensionality" and can be mitigated using \acp{ANN}
 \cite{bengio,vzivzka2019text}
 
 \subsection{Neural NLP}
@@ -103,9 +104,10 @@ In general, \acp{LLM} are the most advanced approach to natural language underst
 %Introduce generative models like generative adversarial networks (GANs) and variational autoencoders (VAEs).
 %Explore their applications in natural language processing (NLP) tasks, including text generation, summarization, and translation.
 
+\newpage
 \section{Artificial Intelligence for Document Understanding}
 \subsection{Machine Learning based Document Understanding}
-\acl{AI} and \acl{ML} provide important tools and techniques for Document Understanding. For example, \ac{ML} can be used for \ac{OCR} as well as \ac{NLP} tasks. In this section, the foundations for the training of learning systems and the functioning of \acp{ANN} are discussed. Furthermore, different types of \acp{ANN} used for Document Understanding systems are introduced.
+\acl{AI} and \acl{ML} provide important tools and techniques for Document Understanding. For example, \ac{ML} can be used for \ac{OCR} as well as \ac{NLP} tasks. In this section, the foundations for the training of learning systems and the functioning of \acfp{ANN} are discussed. Furthermore, different types of \acp{ANN} used for Document Understanding systems are introduced.
 
 \subsection{Supervised Learning}
 \label{supervised}
@@ -164,7 +166,7 @@ A perceptron can be trained using the supervised learning paradigm. The learning
 The steps from 2. are repeated until the overall error is below a defined threshold. It can be noticed the values of the weights converge to a constant state.
 \cite{haykin2009neural,Rosenblatt_1957}
 
-This single-layer perceptron can only solve problems of \textit{linear} nature. For example, it is able to model the behavior of the binary \textit{and}-operator and \textit{or}-operator. However, it is only possible to simulate the behavior of the \textit{xor} operator with a multi-layer perceptron and not with a single-layer perceptron. Nevertheless, it demonstrates that it is in principle possible to create an \ac{ANN}.
+This single-layer perceptron can only solve problems of \textit{linear} nature. For example, it is able to model the behavior of the binary \textit{and}-operator and \textit{or}-operator. However, it is only possible to simulate the behavior of the \textit{xor}-operator with a multi-layer perceptron and not with a single-layer perceptron. Nevertheless, it demonstrates that it is in principle possible to create an \ac{ANN}.
 \cite{haykin2009neural}
 
 \subsection*{Multi-layer Perceptron and Backpropagation}
@@ -236,7 +238,7 @@ The main idea is that the output of a hidden network layer at time \textit{t} is
 
 However, classical \acp{RNN} are affected by the so-called "vanishing gradient problem", where the gradient used to update the weights gets weaker and weaker with every iteration until it is essentially zero. Vice versa, it is also possible that the gradient grows exponentially instead of converging to zero. This makes it difficult to train an \ac{RNN} using backpropagation. This effect prevents the network to learn rather subtle patterns in the data. \cite{hochreiter2001gradient}
 
-To deal with the issue of the "vanishing gradient problem" in classical \acp{RNN} the idea of the \ac{LSTM} has been introduced by Hochreiter and Schmidhuber of the Technical University Munich \cite{hochreiter1997long}. 
+To deal with the issue of the "vanishing gradient problem" in classical \acp{RNN} the idea of the \acf{LSTM} has been introduced by Hochreiter and Schmidhuber of the Technical University Munich \cite{hochreiter1997long}. 
 
 \ac{LSTM} is a type of \ac{RNN} that can distinguish between relevant and less relevant information. To achieve this, an \ac{LSTM} contains several \textit{forget gates} within the hidden layers at which it is determined which inputs should be placed in memory and what should be \textit{forgotten}. The \ac{LSTM} architecture is illustrated in \cref{pic:LSTM}.
 
@@ -252,9 +254,22 @@ An LSTM-based ML model can learn that certain expressions are statistically more
 
 \subsection{Transformer Architecture}
 \label{Transformer}
-Transformer Models are used for \ac{GPT} which are the technology powering ChatGPT \cite{brown2020language}.
-\cite{vaswaniattentionneed}
+Transformer models are a relatively new and powerful class of \ac{ANN}. 
+For example, Transformer models are used for \acf{GPT} which are the technology powering ChatGPT. Although initially intended for \ac{NLP}, there are also ways to create Transformer models for image processing.
+\cite{brown2020language}
 
+The Transformer architecture has been developed in 2017 by Google researchers Vaswani et al. \cite{vaswaniattentionneed}. The approach is mainly based on two key innovations:
+\begin{enumerate}
+    \item \textit{Positional Encoding}. Unlike \acp{CNN} or \acp{RNN} which process the input sequentially, word by word or pixel by pixel, Transformer models can process the entire input sequence at once. For this, the positional encoding is added to the word embeddings to provide information about the position of each token. Furthermore, this feature makes Transformers more efficiently trainable and allows the processing of larger amounts of training data.
+    \item \textit{Self-Attention}. Transformer models can capture long-range dependencies across the whole input sequence. Because of their sequential nature, this has not been possible with the previously introduced \acp{ANN}, when the input sequences consist of too many components. Self-Attention allows the Transformer model to evaluate the importance of different parts of the input sequence when processing one particular element. With this mechanism more advanced grammatical concepts like tenses, conjugations, and gender can be learned.
+    \cite{brown2020language,vaswaniattentionneed}
+
+\end{enumerate}
+
+At the moment, Transformer models are mostly used in the context of \ac{GenAI}. However, because of their capability to handle both images and text as input, they have potential for Document Understanding tasks as well. Especially the use of layout-aware \acp{LLM} can be a promising approach for a new Document Understanding innovation.
+\cite{wang2023docllm,brown2020language}
+
+\newpage
 \section{Business Applications of Document Understanding}
 \subsection{Robotic Process Automation with integrated Document Understanding}
 \ac{RPA} is a technology for the automation of business processes and is based on so-called \textit{software robots} and \ac{AI}. \ac{RPA} tools operate on the user interface level of an information system and mimic the actions of a human worker. 
